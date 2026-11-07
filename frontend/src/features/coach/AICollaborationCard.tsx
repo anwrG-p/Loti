@@ -45,7 +45,9 @@ export function AICollaborationCard({ collaboration, className = '' }: AICollabo
         <div className="flex flex-col gap-2 rounded-lg bg-surface-raised p-3 text-sm text-ink-muted">
           <p className="font-medium text-ink">Building your collaboration profile</p>
           <p>
-            Type {Math.max(0, 10 - typedTurns)} more messages to Loti to unlock your collaboration score and learning tip.
+            {typedTurns < 10
+              ? `Type ${10 - typedTurns} more message${10 - typedTurns === 1 ? '' : 's'} to Loti to unlock your collaboration score and learning tip.`
+              : 'Keep exploring with Loti — asking questions, testing ideas, and trying new approaches will unlock your collaboration score.'}
           </p>
         </div>
       ) : null}

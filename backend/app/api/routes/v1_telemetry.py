@@ -5,6 +5,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, Field, StringConstraints, model_validator
 
 from app.privacy.telemetry_store import ID_PATTERN, LockTimeout, append_events
+from assessment_engine.anomaly_detector import detect_button_masher
 
 # The anonymous device id (R13) and the session id. user_id is also a file name: no dots or
 # slashes. The store lowercases it, so u1 and U1 are one user.
@@ -37,6 +38,9 @@ class TelemetryEvent(BaseModel):
     error_burst: Annotated[int, Field(ge=0)]
     hesitation_jitter: Annotated[float, Field(ge=0)]
     keystroke_latency_ms: Annotated[float, Field(ge=0)] | None = None
+    uncertainty_weight: Annotated[float, Field(ge=0.0, le=1.0)] = 1.0
+    confidence_score: Annotated[float, Field(ge=0.0, le=1.0)] = 1.0
+    anomaly_flag: Annotated[str, StringConstraints(max_length=32)] | None = None
     trial_meta: Annotated[dict[MetaKey, MetaValue], Field(max_length=16)] = {}
     voice_opt_in: bool = False
     voice_latency_ms: Annotated[float, Field(ge=0)] | None = None
@@ -63,8 +67,16 @@ router = APIRouter()
 def ingest(body: TelemetryEvent | Batch) -> dict[str, int]:
     # Sync handler, so it runs in the threadpool: waiting on the lock never stalls the event loop.
     events = body if isinstance(body, list) else [body]
+    event_dicts = [e.model_dump(mode="json") for e in events]
+    for ed in event_dicts:
+        if not ed.get("anomaly_flag"):
+            detector_result = detect_button_masher(ed)
+            if detector_result.is_anomaly:
+                ed["anomaly_flag"] = detector_result.anomaly_type
+                ed["uncertainty_weight"] = detector_result.uncertainty_multiplier if hasattr(detector_result, "uncertainty_multiplier") else detector_result.uncertainty_weight
+                ed["confidence_score"] = detector_result.confidence_score
     try:
-        accepted = append_events(e.model_dump(mode="json") for e in events)
+        accepted = append_events(event_dicts)
     except LockTimeout:
         raise HTTPException(
             status_code=503, detail="telemetry store busy", headers={"Retry-After": "1"}

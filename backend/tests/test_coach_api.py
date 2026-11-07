@@ -322,7 +322,9 @@ def test_ten_ok_turns_are_not_enough_data(client):
         client.post(CHAT, json=body("ok"))
     # Even with real sessions: telemetry is not a collaboration signal.
     client.post("/v1/telemetry/event", json=EVENT)
-    assert score(client) == {"status": "not_enough_data"}
+    out = score(client)
+    assert out["status"] == "not_enough_data"
+    assert out["evidence"]["typed_turns"] == MIN_TYPED_TURNS
 
 
 def test_marker_evidence_gives_a_number_with_nulls_where_there_is_none(client):
@@ -353,7 +355,9 @@ def test_clicked_choices_never_count(client):
 def test_two_evidenced_dimensions_are_not_enough(client):
     for text in EVIDENCE_TURNS[:4] + ["ok"] * 6:
         client.post(CHAT, json=body(text))
-    assert score(client) == {"status": "not_enough_data"}
+    out = score(client)
+    assert out["status"] == "not_enough_data"
+    assert out["evidence"]["typed_turns"] == 10
 
 
 def test_gated_turns_do_not_count_towards_the_score(client):

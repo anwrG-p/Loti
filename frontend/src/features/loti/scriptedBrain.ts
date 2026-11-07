@@ -110,12 +110,46 @@ function node(id: string, ctx: LotiContext): LotiMessage | null {
         text: 'Good morning, sunshine! Time for a quick session?',
         choices: [{ id: 'yes', label: 'Sure', action: train(ctx) }],
       }
+    case 'mashing':
+      return {
+        id,
+        pose: 'think',
+        text: 'Noticed super fast taps on that round. Feeling rushed or distracted?',
+        choices: [
+          { id: 'distracted', label: 'Distracted', action: reply('mashing-distracted') },
+          { id: 'rushed', label: 'Felt rushed', action: reply('mashing-rushed') },
+          { id: 'ready', label: 'Ready now', action: reply('mashing-ready') },
+        ],
+      }
+    case 'mashing-distracted':
+      return {
+        id,
+        pose: 'talk',
+        text: 'That happens! We protected your score. Take a moment before the next round.',
+        choices: [{ id: 'train', label: 'Take a breath', action: train(ctx) }],
+      }
+    case 'mashing-rushed':
+      return {
+        id,
+        pose: 'talk',
+        text: 'No rush at all. Training is about rhythm, not speed. Ready when you are.',
+        choices: [{ id: 'train', label: 'Try again', action: train(ctx) }],
+      }
+    case 'mashing-ready':
+      return {
+        id,
+        pose: 'happy',
+        text: "Great spirit! Let's take it slow, steady, and focused this time.",
+        choices: [{ id: 'train', label: "Let's train", action: train(ctx) }],
+      }
     default:
       return null
   }
 }
 
 function openingId(ctx: LotiContext): string {
+  // Emotion aware: rapid button mashing triggers an empathetic check-in first
+  if (ctx.recentAnomaly === 'button_masher') return 'mashing'
   const month = ctx.now.getMonth()
   const day = ctx.now.getDay()
   const hour = ctx.now.getHours()

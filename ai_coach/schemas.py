@@ -174,6 +174,10 @@ class ReplySource(str, Enum):
     CRISIS = "crisis"                  # keyword gate hit, or the backup classifier said "high"
     CRISIS_SIGNPOST = "crisis_signpost"  # the backup classifier said "low"
     HEALTH_SIGNPOST = "health_signpost"
+    FORTUNE_TELLER = "fortune_teller"    # fortune teller trap: absolute prediction requested
+    PUSHBACK_INTERVENTION = "pushback_intervention"
+    ANOMALY_INTERVENTION = "anomaly_intervention"
+    STAGNATION_INTERVENTION = "stagnation_intervention"
 
 
 class ChatMessageRole(str, Enum):
@@ -199,6 +203,10 @@ class ChatRequest(BaseModel):
     # From the state bus (BE-11), filled server side only, never from the client.
     uncertainty: Optional[float] = Field(default=None, ge=0.0, le=1.0)
     adaptation_reason: Optional[str] = None
+    anomaly_flag: Optional[str] = None
+    recent_rt_drop_ms: Optional[float] = None
+    fatigue_bucket: Optional[str] = None
+    pillar_scores: Optional[Dict[str, float]] = None
 
 
 class CoachingResponse(BaseModel):

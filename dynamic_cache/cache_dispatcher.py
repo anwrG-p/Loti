@@ -1136,6 +1136,21 @@ class Dispatcher:
             # The schema served longest ago (never served first), ties in SCHEMA_TYPES order.
             chosen = min(candidates, key=lambda s: (st.schemas.get(s, {}).get("served_at", -1.0), SCHEMA_TYPES.index(s)))
             theta, marker = self._theta(key, st, chosen)
+
+            # Stagnation Plateau detection & loop break (Layer C, Scenario 2)
+            from .stagnation import detect_stagnation
+            past_trials = self.trials(key, chosen)
+            if len(past_trials) >= 12:
+                acc_windows = [
+                    sum(t.correct for t in past_trials[i : i + 5]) / 5.0
+                    for i in range(0, len(past_trials) - 4, 2)
+                ]
+                if detect_stagnation(acc_windows).is_stagnant:
+                    alt_candidates = [s for s in candidates if s != chosen]
+                    if alt_candidates:
+                        chosen = min(alt_candidates, key=lambda s: (st.schemas.get(s, {}).get("served_at", -1.0), SCHEMA_TYPES.index(s)))
+                        theta, marker = self._theta(key, st, chosen)
+
             level = theta_level(chosen, theta)
             archetype = self.archetype(key)
             ink = pool_inks(chosen, inks)

@@ -144,6 +144,7 @@ class CoachChatRequest(BaseModel):
     transcript: Annotated[List[ShownTurn], Field(max_length=MAX_TRANSCRIPT_TURNS)] = []
     message: Text
     kind: Literal["typed", "choice"]
+    anomaly_flag: Optional[str] = None
 
 
 class LotiMessageOut(BaseModel):
@@ -213,7 +214,8 @@ def coach_chat(
 ) -> CoachChatResponse:
     deadline = time.monotonic() + TURN_DEADLINE_S
     key = user_key(req.user_id)
-    verified = KNOWN_LOTI_REPLIES | stored_loti_replies(key, timeout=deadline - time.monotonic())
+    timeout_rem = min(TURN_DEADLINE_S, max(0.0, deadline - time.monotonic()))
+    verified = KNOWN_LOTI_REPLIES | stored_loti_replies(key, timeout=timeout_rem)
     kept = [t for t in req.transcript if t.from_ == "you" or t.text in verified]
     unverified = len(req.transcript) - len(kept)
     history = [
@@ -240,6 +242,7 @@ def coach_chat(
             delta_vector=context.get("delta_vector"),
             uncertainty=context.get("uncertainty"),
             adaptation_reason=context.get("adaptation_reason"),
+            anomaly_flag=req.anomaly_flag or context.get("anomaly_flag"),
         )
     )
     source = resp.reply_source

@@ -22,6 +22,7 @@ export type LotiContext = {
   mood?: Mood
   hasGoalsThisYear: boolean
   sessionsThisWeek: number
+  recentAnomaly?: 'button_masher' | null
 }
 
 export interface LotiBrain {

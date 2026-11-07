@@ -12,6 +12,7 @@ from dotenv import dotenv_values
 
 # app/ -> backend/
 ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
+ROOT_ENV_FILE = Path(__file__).resolve().parents[2] / ".env"
 
 
 def clean_env_val(val: str) -> str:
@@ -30,11 +31,16 @@ def load_env_file(
     Returns the names it set (never the values). A missing file sets nothing.
     """
     env = os.environ if environ is None else environ
-    if not path.is_file():
+    if path == ENV_FILE:
+        target_paths = [p for p in (ENV_FILE, ROOT_ENV_FILE) if p.is_file()]
+    else:
+        target_paths = [path] if path.is_file() else []
+    if not target_paths:
         return []
     added = []
-    for name, value in dotenv_values(path).items():
-        if value is not None and name not in env:
-            env[name] = clean_env_val(value)
-            added.append(name)
+    for p in target_paths:
+        for name, value in dotenv_values(p).items():
+            if value is not None and name not in env:
+                env[name] = clean_env_val(value)
+                added.append(name)
     return added

@@ -22,7 +22,7 @@ export type CrisisGate = (text: string) => CrisisResult
 /** What the coach may be told: an allow-list of Loti's context. The mood guess never leaves the
     device (ADR 0002), so it is not on the list, and neither is any field added to LotiContext later
     until someone adds it here on purpose. */
-export type CoachContext = Pick<LotiContext, 'now' | 'weakestPillar' | 'hasGoalsThisYear' | 'sessionsThisWeek'>
+export type CoachContext = Pick<LotiContext, 'now' | 'weakestPillar' | 'hasGoalsThisYear' | 'sessionsThisWeek' | 'recentAnomaly'>
 
 export type ShownTurnContext = { from: 'loti' | 'you'; text: string }
 
@@ -36,6 +36,7 @@ export type CoachTransport = (
 export function coachContext(ctx: LotiContext): CoachContext {
   const out: CoachContext = { now: ctx.now, hasGoalsThisYear: ctx.hasGoalsThisYear, sessionsThisWeek: ctx.sessionsThisWeek }
   if (ctx.weakestPillar) out.weakestPillar = ctx.weakestPillar
+  if (ctx.recentAnomaly) out.recentAnomaly = ctx.recentAnomaly
   return out
 }
 
@@ -85,6 +86,7 @@ export async function httpCoachTransport(
         user_id: getUserId(),
         message: text,
         kind: 'typed',
+        anomaly_flag: _ctx.recentAnomaly || undefined,
         transcript: transcript.map((t) => ({ from: t.from, text: t.text })).slice(-10),
       }),
     })

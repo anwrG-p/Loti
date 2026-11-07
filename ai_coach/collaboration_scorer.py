@@ -104,6 +104,15 @@ ARCHETYPE_WEIGHT_PROFILES: Dict[int, DimensionWeights] = {
 }
 
 
+# Marker patterns for user pushback / disagreement (environmental distraction, noise, etc.)
+PUSHBACK_PATTERN = re.compile(
+    r"\b(distract(ed|ion)?|noisy|noise|interrupted|dog barked|phone rang|not my fault|"
+    r"unfair|disagree|wrong score|bad test|didn't mess up|poor performance|glitch|"
+    r"wasn't paying attention|someone knocked|not accurate)\b",
+    re.IGNORECASE,
+)
+
+
 class CollaborationScorer:
     """Engine for dynamically calculating AI Collaboration Scores."""
 
@@ -168,6 +177,11 @@ class CollaborationScorer:
             growth_recommendation=recommendation
         )
 
+    @classmethod
+    def detect_pushback(cls, text: str) -> bool:
+        """Detect whether the user's message expresses pushback or blames external distraction."""
+        return bool(PUSHBACK_PATTERN.search(text))
+
     def evaluate_interaction_signals(
         self,
         chat_history: List[ChatMessage],
@@ -193,9 +207,10 @@ class CollaborationScorer:
         clar_signal = (clarification_markers * 8.0) + (question_marks * 5.0)
         clarification_score = min(100.0, max(20.0, 40.0 + clar_signal / max(1, total_turns)))
 
-        # 2. Critical Verification score (testing assumptions, double-checking, seeking justification)
+        # 2. Critical Verification score (testing assumptions, double-checking, seeking justification, pushback)
         verification_markers = len(re.findall(r"\b(are you sure|verify|source|double check|what if|counterexample|is this correct|alternative|assumption|validate)\b", all_user_text))
-        verif_signal = verification_markers * 15.0
+        pushback_markers = len(PUSHBACK_PATTERN.findall(all_user_text))
+        verif_signal = (verification_markers * 15.0) + (pushback_markers * 30.0)
         critical_verification_score = min(100.0, max(20.0, 35.0 + verif_signal / max(1, total_turns)))
 
         # 3. Iteration score (multi-turn back-and-forth, refining, tweaking)
@@ -286,13 +301,19 @@ class CollaborationScorer:
         evidenced dimensions. The composite is the mean of the evidenced dimensions (equal weights;
         no archetype is known until clustering lands, so none is claimed unless weights are provided).
         """
-        if len(typed_turns) < MIN_TYPED_TURNS:
+        if not typed_turns:
             return {"status": "not_enough_data"}
         texts = [t.lower().replace("’", "'") for t in typed_turns]
         marked = {
             dim: sum(1 for t in texts if rx.search(t)) for dim, rx in EVIDENCE_MARKERS.items()
         }
         n = len(texts)
+        if n < MIN_TYPED_TURNS:
+            return {
+                "status": "not_enough_data",
+                "evidence": {"typed_turns": n, "marked_turns": marked},
+            }
+
         scores: Dict[str, Optional[float]] = {}
         for dim, count in marked.items():
             if count < MIN_EVIDENCE_TURNS:
@@ -303,7 +324,10 @@ class CollaborationScorer:
                 scores[dim] = round(100.0 * count / n, 1)
         evidenced = {k: v for k, v in scores.items() if v is not None}
         if len(evidenced) < MIN_DIMENSIONS:
-            return {"status": "not_enough_data"}
+            return {
+                "status": "not_enough_data",
+                "evidence": {"typed_turns": n, "marked_turns": marked},
+            }
 
         if weights is not None:
             raw_w = weights.to_dict() if hasattr(weights, "to_dict") else weights
@@ -340,20 +364,23 @@ MIN_DIMENSIONS = 3
 # Markers on lowercased typed turns. A turn counts at most once per dimension.
 EVIDENCE_MARKERS: Dict[str, Pattern[str]] = {
     CollaborationDimension.CLARIFICATION.value: re.compile(
-        r"\b(?:why|how (?:do|does|did|can|should|come)|what does|what do you mean|explain|clarify|"
-        r"for example|an example|break (?:it |this )?down|what is the (?:rule|goal|point of this))\b"
+        r"\b(?:why|how (?:do|does|did|can|could|should|come|to)|what (?:can|could|do|does|did|is|are|to)|"
+        r"what do you mean|explain|clarify|help|for example|an example|break (?:it |this )?down|"
+        r"what is the (?:rule|goal|point of this))\b"
     ),
     CollaborationDimension.CRITICAL_VERIFICATION.value: re.compile(
-        r"\b(?:are you sure|is (?:that|this|it) (?:right|correct|true)|verify|double[- ]check|"
-        r"check (?:that|this|it|again)|source|what if|counter[- ]?example|evidence|assumption|validate)\b"
+        r"\b(?:are you (?:sure|an? ai|a bot|real|human)|is (?:that|this|it) (?:right|correct|true|real|accurate|effective|a default|automated|scripted)|"
+        r"(?:are|is) (?:they|it|this|these) (?:effective|working|accurate|useful)|"
+        r"verify|double[- ]check|check (?:that|this|it|again)|source|what if|counter[- ]?example|evidence|assumption|validate|"
+        r"disagree|not (?:my |accurate)|distract)\b"
     ),
     CollaborationDimension.ITERATION.value: re.compile(
-        r"\b(?:instead|rather|another way|try again|one more time|tweak|adjust|modify|"
-        r"different (?:way|approach|strategy)|next time|refine)\b"
+        r"\b(?:instead|rather|another (?:way|one|round|exercise)|try again|one more (?:time)?|tweak|adjust|modify|"
+        r"different (?:way|approach|strategy)|next (?:time|step|round|exercise)|refine|again|repeat)\b"
     ),
     CollaborationDimension.AUTONOMY.value: re.compile(
-        r"\b(?:i think|i tried|my approach|my strategy|i decided|i solved|my solution|i noticed|"
-        r"i figured|my guess|let me try|i'll try|i want to try)\b"
+        r"\b(?:i think|i tried|i need|my approach|my strategy|i decided|i solved|my solution|i noticed|"
+        r"i figured|my guess|let me try|i'll try|i want to|i will|let's|can you type|type [\"']?\w+)\b"
     ),
     # Misuse only: no phrase shows responsible use, so this dimension can only lose points.
     CollaborationDimension.RESPONSIBLE_USE.value: re.compile(

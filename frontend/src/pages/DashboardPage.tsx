@@ -66,10 +66,17 @@ export default function DashboardPage() {
   useEffect(() => {
     if (usingMocks()) return
     let live = true
-    fetchProfile().then((data) => {
-      if (live && data) setProfile(data)
-    })
-    return () => { live = false }
+    const load = () => {
+      fetchProfile().then((data) => {
+        if (live && data) setProfile(data)
+      })
+    }
+    load()
+    window.addEventListener('focus', load)
+    return () => {
+      live = false
+      window.removeEventListener('focus', load)
+    }
   }, [])
 
   const localPillars = useMemo(() => currentPillars(sessions), [sessions])

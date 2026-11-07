@@ -76,6 +76,25 @@ OFFLINE_WHY_REPLY = "I tuned the pace to fit your recent rounds." + BUBBLE_SEPAR
 OFFLINE_SCORE_REPLY = (
     "Your scores show on Home once there's enough data." + BUBBLE_SEPARATOR + "Want one tip for your next round?"
 )
+OFFLINE_PUSHBACK_REPLY = (
+    "External distractions definitely impact your focus."
+    + BUBBLE_SEPARATOR
+    + "I've increased the uncertainty on that session."
+    + BUBBLE_SEPARATOR
+    + "Thanks for verifying your real context."
+)
+OFFLINE_ANOMALY_REPLY = (
+    "Noticed super fast taps with misses."
+    + BUBBLE_SEPARATOR
+    + "Feeling rushed or distracted right now?"
+)
+OFFLINE_STAGNATION_REPLY = (
+    "Your performance has flatlined lately."
+    + BUBBLE_SEPARATOR
+    + "We switched formats to spark new focus."
+    + BUBBLE_SEPARATOR
+    + "Try testing a brand new strategy."
+)
 OFFLINE_TIER_GUIDANCE = {
     ArchetypeTier.EXPLORER: "Small, steady steps work well right now.",
     ArchetypeTier.PRACTITIONER: "Nice rhythm. Try testing your first guess.",
@@ -91,9 +110,13 @@ def known_loti_replies() -> Set[str]:
     replies = [
         OFFLINE_WHY_REPLY,
         OFFLINE_SCORE_REPLY,
+        OFFLINE_PUSHBACK_REPLY,
+        OFFLINE_ANOMALY_REPLY,
+        OFFLINE_STAGNATION_REPLY,
         *(t + BUBBLE_SEPARATOR + OFFLINE_NEXT_QUESTION for t in OFFLINE_TIER_GUIDANCE.values()),
         g.CRISIS_REPLY_EN, g.CRISIS_REPLY_FR, g.CRISIS_SIGNPOST_EN, g.CRISIS_SIGNPOST_FR,
         g.FRONTEND_CRISIS_MESSAGE, g.HEALTH_SIGNPOST_REPLY, g.SAFE_FALLBACK_REPLY,
+        g.FORTUNE_TELLER_REPLY,
     ]
     return {part for r in replies for part in (r, *split_bubbles(r))}
 
@@ -196,6 +219,7 @@ class AICoachAgent:
         delta_vector: Optional[Dict[str, float]] = None,
         uncertainty: Optional[float] = None,
         adaptation_reason: Optional[str] = None,
+        anomaly_flag: Optional[str] = None,
     ) -> str:
         """Compose the full system instruction with XAI injection and safety rules."""
         if is_profile_delta(delta_vector) or adaptation_reason:
@@ -205,6 +229,14 @@ class AICoachAgent:
             xai_context = self.explainer.format_xai_prompt_context(
                 delta_vector=delta_vector,
                 cluster_id=cluster_id,
+            )
+        if anomaly_flag == "button_masher":
+            xai_context += (
+                "\nEMOTIONAL AWARENESS MANDATE:\n"
+                "- The user recently exhibited rapid tapping/button mashing on an exercise.\n"
+                "- Acknowledge that rushing happens when feeling distracted, frustrated, or overwhelmed.\n"
+                "- Be warm, validating, and calming. Suggest a brief pause or deep breath.\n"
+                "- Reassure them that their score was protected with high uncertainty so it won't hurt their training.\n"
             )
         guardrail_mandate = self.guardrail.get_system_prompt_guardrails()
 
@@ -350,6 +382,11 @@ class AICoachAgent:
         signpost = self.guardrail.health_signpost(message)
         if signpost.hit:
             return self._fixed_reply(signpost.reply or "", ReplySource.HEALTH_SIGNPOST), False, classified
+
+        ft = self.guardrail.fortune_teller_check(message)
+        if ft.hit:
+            return self._fixed_reply(ft.reply or "", ReplySource.FORTUNE_TELLER), False, classified
+
         return None, llm_allowed, classified
 
     def _redact_crisis_turns(self, window: List[ChatMessage]) -> List[ChatMessage]:
@@ -496,7 +533,33 @@ class AICoachAgent:
         lower_msg = message.lower()
         tier = self.scorer.get_tier_for_cluster(cluster_id)
 
-        if any(w in lower_msg for w in ["why", "harder", "faster", "change", "adapted", "pacing", "different"]):
+        # 1. User pushback / environmental distraction (Scenario 4)
+        if self.scorer.detect_pushback(message):
+            return OFFLINE_PUSHBACK_REPLY
+
+        # 2. Button masher / rapid click anomaly (Scenario 1)
+        if any(w in lower_msg for w in ["mash", "rushing", "too fast", "speed click", "clicking through"]) or (
+            adaptation_reason and "button_masher" in adaptation_reason.lower()
+        ):
+            return OFFLINE_ANOMALY_REPLY
+
+        # 3. Stagnation plateau (Scenario 2)
+        if any(w in lower_msg for w in ["plateau", "stuck", "flatline", "stagnat"]) or (
+            adaptation_reason and ("plateau" in adaptation_reason.lower() or "stagnat" in adaptation_reason.lower())
+        ):
+            return OFFLINE_STAGNATION_REPLY
+
+        # 4. "Why" Explainability pipeline query (Scenario 3)
+        if any(w in lower_msg for w in ["why", "harder", "faster", "change", "adapted", "pacing", "different", "assign"]):
+            if any(term in lower_msg for term in ["assign", "today", "specific", "picked"]):
+                pipeline_expl = self.explainer.explain_assignment_from_pipeline(
+                    adaptation_reason=adaptation_reason,
+                    delta_vector=delta_vector,
+                    uncertainty=uncertainty,
+                )
+                if fit_bubbles(pipeline_expl) == pipeline_expl and not self.guardrail.sanitize(pipeline_expl)[1].sanitized:
+                    return pipeline_expl
+
             profile_line = self.explainer.profile_delta_line(delta_vector, uncertainty)
             if not (adaptation_reason or profile_line):
                 return OFFLINE_WHY_REPLY
@@ -543,39 +606,59 @@ class AICoachAgent:
         user_id: str,
         cluster_id: int,
         delta_vector: Optional[Dict[str, float]] = None,
+        pillar_scores: Optional[Dict[str, float]] = None,
     ) -> Dict[str, Any]:
         """Produce a structured, personalized cognitive learning curriculum."""
+        from dynamic_cache.asymmetrical_planner import plan_asymmetrical_curriculum
+
         tier = self.scorer.get_tier_for_cluster(cluster_id)
         deltas = delta_vector or {}
 
-        modules = [
-            {
-                "module_id": "MOD-WM-01",
-                "title": "Working Memory Stabilization",
-                "focus": "Dual N-Back sequence stability and chunking heuristics",
-                "target_duration_mins": 10,
-            },
-            {
-                "module_id": "MOD-PI-02",
-                "title": "Matrix Pattern Induction Agility",
-                "focus": "Rule-extrapolation speed across progressive rotational matrices",
-                "target_duration_mins": 12,
-            },
-            {
-                "module_id": "MOD-EF-03",
-                "title": "Executive Task-Switching Conditioning",
-                "focus": "Cognitive flexibility under variable distractor loads",
-                "target_duration_mins": 8,
-            },
-        ]
+        asym_plan = None
+        if pillar_scores:
+            asym_plan = plan_asymmetrical_curriculum(pillar_scores)
 
-        return {
+        if asym_plan and asym_plan.is_asymmetrical:
+            modules = asym_plan.curriculum_modules
+            learning_title = f"{tier.value.title()} Asymmetrical Adaptive Track"
+            radar_split = asym_plan.radar_split
+            asym_detected = True
+        else:
+            modules = [
+                {
+                    "module_id": "MOD-WM-01",
+                    "title": "Working Memory Stabilization",
+                    "focus": "Dual N-Back sequence stability and chunking heuristics",
+                    "target_duration_mins": 10,
+                },
+                {
+                    "module_id": "MOD-PI-02",
+                    "title": "Matrix Pattern Induction Agility",
+                    "focus": "Rule-extrapolation speed across progressive rotational matrices",
+                    "target_duration_mins": 12,
+                },
+                {
+                    "module_id": "MOD-EF-03",
+                    "title": "Executive Task-Switching Conditioning",
+                    "focus": "Cognitive flexibility under variable distractor loads",
+                    "target_duration_mins": 8,
+                },
+            ]
+            learning_title = f"{tier.value.title()} Adaptive Cognitive Track"
+            radar_split = None
+            asym_detected = False
+
+        result = {
             "user_id": user_id,
             "archetype_id": cluster_id,
             "archetype_tier": tier.value,
-            "learning_path_title": f"{tier.value.title()} Adaptive Cognitive Track",
+            "learning_path_title": learning_title,
             "modules": modules,
             "recommended_weekly_sessions": 3 if tier == ArchetypeTier.EXPLORER else 4,
             "explainability_anchor": self.explainer.generate_adaptation_rationale(deltas, cluster_id),
             "safety_certified": True,
+            "is_asymmetrical": asym_detected,
         }
+        if radar_split is not None:
+            result["radar_split"] = radar_split
+        return result

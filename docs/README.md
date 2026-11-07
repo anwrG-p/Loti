@@ -19,9 +19,5 @@ What the product is and how to run it: the [root README](../README.md).
 
 ## History (kept as a record, not maintained)
 - [architecture/TEAM_PLAN.md](architecture/TEAM_PLAN.md): the original five-member challenge plan.
-- [ui/](ui/README.md): the pre–brand v2 UI (19 page specs, screenshots, sprint state, decisions, QA log, changelog).
-- [design/UX_TRANSFORMATION_PLAN.md](design/UX_TRANSFORMATION_PLAN.md): the pre–brand v2 journey and mascot plan.
-- `branding/`: early BRIAN logo concepts.
-- [superpowers/plans/](superpowers/plans/): an early implementation plan.
 
 Links are relative. `tests/test_docs_links.py` fails on broken links and on any `file:///` link.

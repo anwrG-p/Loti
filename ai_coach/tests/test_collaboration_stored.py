@@ -11,7 +11,8 @@ from ai_coach.collaboration_scorer import (
 def test_not_enough_data_under_ten_turns():
     scorer = CollaborationScorer()
     res = scorer.score_stored_history(["hello loti", "how are you?"])
-    assert res == {"status": "not_enough_data"}
+    assert res["status"] == "not_enough_data"
+    assert res["evidence"]["typed_turns"] == 2
 
 
 def test_score_stored_history_with_evidenced_turns():

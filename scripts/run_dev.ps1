@@ -3,8 +3,15 @@
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $frontendDir = Join-Path $repoRoot "frontend"
 
-$python = Join-Path $repoRoot ".venv\Scripts\python.exe"
-if (-not (Test-Path $python)) { $python = "python" }
+$condaEnvPython = "C:\Users\User\miniconda3\envs\ai4brain-clustering\python.exe"
+if (Test-Path $condaEnvPython) {
+    $python = $condaEnvPython
+} elseif ($env:CONDA_PREFIX -and (Test-Path (Join-Path $env:CONDA_PREFIX "python.exe"))) {
+    $python = Join-Path $env:CONDA_PREFIX "python.exe"
+} else {
+    $python = Join-Path $repoRoot ".venv\Scripts\python.exe"
+    if (-not (Test-Path $python)) { $python = "python" }
+}
 
 if (-not (Test-Path (Join-Path $frontendDir "node_modules"))) {
     Write-Error "Usage: run 'cd frontend && npm ci' first, then scripts/run_dev.ps1"

@@ -8,16 +8,33 @@ import { useGoalsStore, type Goals } from '../insights/goals'
 import { useSessionStore, type SessionRecord } from '../insights/sessionStore'
 import type { LotiContext } from './types'
 
+export const RECENT_ANOMALY_KEY = 'synapsetwin_recent_anomaly'
+
+export function getRecentAnomaly(): 'button_masher' | null {
+  try {
+    return (sessionStorage.getItem(RECENT_ANOMALY_KEY) as 'button_masher') || null
+  } catch {
+    return null
+  }
+}
+
+export function clearRecentAnomaly(): void {
+  try {
+    sessionStorage.removeItem(RECENT_ANOMALY_KEY)
+  } catch {}
+}
+
 export interface LotiContextInput {
   sessions: readonly SessionRecord[]
   goals: { year: number | null; goals: Goals }
   emotion: EmilyEmotion | undefined
   now: Date
+  recentAnomaly?: 'button_masher' | null
 }
 
 /** What Loti knows when a talk opens, from what is on this device. Pure. The weakest pillar and the
     week's count come from the dashboard's helpers, so Loti and Home always agree. */
-export function lotiContext({ sessions, goals, emotion, now }: LotiContextInput): LotiContext {
+export function lotiContext({ sessions, goals, emotion, now, recentAnomaly }: LotiContextInput): LotiContext {
   const weakest = weakestPillar(currentPillars(sessions))
   const ctx: LotiContext = {
     now,
@@ -26,6 +43,7 @@ export function lotiContext({ sessions, goals, emotion, now }: LotiContextInput)
   }
   if (weakest) ctx.weakestPillar = weakest
   if (emotion) ctx.mood = EMOTION_TO_MOOD[emotion]
+  if (recentAnomaly) ctx.recentAnomaly = recentAnomaly
   return ctx
 }
 
@@ -39,6 +57,7 @@ export function useLotiContext(): LotiContext {
       // Only an active guess (opted in, notice seen: ADR 0002); otherwise Loti knows no mood.
       emotion: moodGuessActive(useDevicePrefs.getState()) ? useEmilyStore.getState().currentEmotion : undefined,
       now: new Date(),
+      recentAnomaly: getRecentAnomaly(),
     })
   })
   return ctx

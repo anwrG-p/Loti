@@ -457,6 +457,28 @@ def reads_french(user_text: str) -> bool:
     return bool(_FRENCH_HINTS.search(normalise_user_text(user_text)))
 
 
+FORTUNE_TELLER_REPLY = (
+    "I cannot predict exact future scores.\n\n"
+    "Cognitive skills vary within statistical confidence intervals.\n\n"
+    "Regular practice narrows your uncertainty band."
+)
+
+_FORTUNE_TELLER_PATTERNS = re.compile(
+    r"\b(?:what will my score be|(?:can you )?predict (?:my |future )*scores?|will i (?:reach|get|score)|"
+    r"tell (?:me )?my future score|what (?:will )?i score next|project my score|"
+    r"exact score (?:next|in the future)|future performance prediction)\b",
+    re.IGNORECASE,
+)
+
+
+def fortune_teller_check(user_text: str) -> GateResult:
+    """Check for queries demanding exact future score predictions (Fortune Teller Trap)."""
+    text = user_text or ""
+    if _FORTUNE_TELLER_PATTERNS.search(text):
+        return GateResult(hit=True, reply=FORTUNE_TELLER_REPLY)
+    return GateResult(hit=False)
+
+
 # Whole replies and each of their bubbles: a client may send a multi-bubble reply back as one
 # transcript turn or as one turn per bubble (bubbles are separated by a blank line).
 _FIXED_CRISIS_NORMALISED = frozenset(
@@ -549,6 +571,10 @@ class SafetyGuardrailEngine:
     @staticmethod
     def health_signpost(user_text: str) -> GateResult:
         return health_signpost(user_text)
+
+    @staticmethod
+    def fortune_teller_check(user_text: str) -> GateResult:
+        return fortune_teller_check(user_text)
 
     def is_diagnostic_inquiry(self, text: str) -> bool:
         """True when the user asks about or names a health condition."""

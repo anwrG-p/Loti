@@ -121,6 +121,16 @@ export default function TaskRunnerPage() {
   )
   const tableEvents = useMemo(() => runEvents.slice(-MAX_EVENTS).reverse(), [runEvents])
 
+  // Detect keyboard / button masher anomaly in this run (rapid RT < 220ms + errors)
+  const isButtonMasher = useMemo(() => {
+    const valid = runEvents.filter(countsToward)
+    if (valid.length < 3) return false
+    const avgRt = valid.reduce((s, e) => s + e.response_time_ms, 0) / valid.length
+    const errors = valid.filter((e) => e.error_flag).length
+    const rapidErrors = valid.filter((e) => e.response_time_ms > 0 && e.response_time_ms < 220 && e.error_flag).length
+    return (rapidErrors >= 2 && rapidErrors / valid.length >= 0.25) || (avgRt < 220 && errors > 0)
+  }, [runEvents])
+
   // Any (re)start mounts a fresh task (onTask resets the run); a remount with the same attempt
   // would repeat item_ids.
   const run = useCallback(() => {
@@ -149,8 +159,13 @@ export default function TaskRunnerPage() {
       saved.current = true
       setSavedRun(saveRun(runEvents, [taskId.current]))
     }
+    if (isButtonMasher) {
+      try {
+        sessionStorage.setItem('synapsetwin_recent_anomaly', 'button_masher')
+      } catch {}
+    }
     setStage('completed')
-  }, [blockEnded, runEvents])
+  }, [blockEnded, isButtonMasher, runEvents])
   // Pausing discards the running block and its events (R3); a finished one completes instead.
   const pause = useCallback(() => {
     if (blockEnded) return complete()
@@ -244,15 +259,34 @@ export default function TaskRunnerPage() {
       {/* One honest line (no fixed success claim) and one button. */}
       {stage === 'completed' && (
         <div className="mx-auto my-auto flex max-w-md flex-col items-center gap-4 py-8 text-center">
-          <Loti pose={totals.n > 0 ? 'happy' : 'idle'} size="md" />
+          <Loti pose={isButtonMasher ? 'think' : totals.n > 0 ? 'happy' : 'idle'} size="md" />
           <h1 className="font-display text-3xl font-bold text-ink">{name}</h1>
           <p className="text-lg text-ink tabular-nums">
             {result}
             {savedRun && ' Added to your progress.'}
           </p>
-          <Button size="lg" onClick={() => navigate('/train')} autoFocus>
-            Back to Train
-          </Button>
+
+          {isButtonMasher && (
+            <div className="rounded-xl border border-amber-300 bg-amber-50 dark:border-amber-700/50 dark:bg-amber-950/30 p-4 text-center max-w-sm flex flex-col gap-1.5 my-1">
+              <span className="text-xs uppercase tracking-wider font-semibold text-amber-800 dark:text-amber-200">
+                Rapid Tapping Detected
+              </span>
+              <p className="text-sm text-amber-900 dark:text-amber-100">
+                We noticed very fast taps with some misses. Take a calm breath! Your score is protected with high uncertainty so this won't drag down your cognitive profile.
+              </p>
+            </div>
+          )}
+
+          <div className="flex flex-col sm:flex-row items-center gap-3">
+            <Button size="lg" onClick={() => navigate('/train')} autoFocus>
+              Back to Train
+            </Button>
+            {isButtonMasher && (
+              <Button variant="secondary" size="lg" onClick={() => navigate('/coach')}>
+                Talk to Loti
+              </Button>
+            )}
+          </div>
         </div>
       )}
 

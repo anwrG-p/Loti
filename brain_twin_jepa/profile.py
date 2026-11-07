@@ -345,13 +345,22 @@ def fatigue_grid_section(sessions: list[Session]) -> list[dict]:
 
 
 def build(key: str, sessions: list[Session], summaries: list[SessionSummary], state, h: int) -> dict:
+    from dynamic_cache.asymmetrical_planner import plan_asymmetrical_curriculum
+
     scored = [s for s in summaries if any(v is not None for v in s.pillars.values())]
     if len(scored) < PROFILE_MIN_SESSIONS:
-        return {"user_id": key, "status": "not_enough_data", "sessions": len(sessions), "min_sessions": PROFILE_MIN_SESSIONS}
+        return {
+            "user_id": key,
+            "status": "not_enough_data",
+            "sessions": len(sessions),
+            "min_sessions": PROFILE_MIN_SESSIONS,
+            "collaboration": collaboration_section(key),
+        }
     model, model_reason = cluster_model()
     archetype, archetype_reason = archetype_section(state, model, model_reason)
     forecast, forecast_reason = forecast_section(sessions, h)
-    return {
+    asym = plan_asymmetrical_curriculum(latest_scores(summaries))
+    res = {
         "user_id": key,
         "status": "ok",
         "sessions": len(sessions),
@@ -366,6 +375,9 @@ def build(key: str, sessions: list[Session], summaries: list[SessionSummary], st
         "snapshots": snapshots_section(summaries, state),
         "fatigue_grid": fatigue_grid_section(sessions),
     }
+    if asym.is_asymmetrical:
+        res["asymmetrical_plan"] = asym.radar_split
+    return res
 
 
 def frame_vector(scores: dict[str, float | None]) -> np.ndarray | None:

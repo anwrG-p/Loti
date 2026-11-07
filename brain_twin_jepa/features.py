@@ -22,6 +22,8 @@ import math
 from collections.abc import Callable, Iterable, Sequence
 from typing import Any
 
+from assessment_engine.anomaly_detector import detect_button_masher
+
 Event = dict[str, Any]
 
 # ---- taskScores.ts ---------------------------------------------------------------------------
@@ -158,8 +160,21 @@ def _num(e: Event, key: str) -> float | None:
     return v if _is_number(v) and math.isfinite(v) else None
 
 
-def _input(fraction: float, trials: int) -> dict[str, Any]:
-    return {"score": 100 * _clamp01(fraction), "trials": trials}
+def _input(
+    fraction: float,
+    trials: int,
+    *,
+    uncertainty_weight: float = 1.0,
+    high_uncertainty: bool = False,
+    anomaly_flag: str | None = None,
+) -> dict[str, Any]:
+    res: dict[str, Any] = {"score": 100 * _clamp01(fraction), "trials": trials}
+    if high_uncertainty or anomaly_flag is not None or uncertainty_weight < 0.5:
+        res["high_uncertainty"] = True
+        res["uncertainty_weight"] = uncertainty_weight
+        if anomaly_flag:
+            res["anomaly_flag"] = anomaly_flag
+    return res
 
 
 def _js_strict_eq(a: Any, b: Any) -> bool:
@@ -414,6 +429,15 @@ def ez_diffusion_boundary(trials: Sequence[Event], s: float = 0.1) -> float | No
 
 def task_scores(events: Sequence[Event]) -> dict[str, dict[str, Any]]:
     """One session's events -> the doc's 0-100 inputs (only the inputs that have data)."""
+    # Button masher anomaly detection (Layer A)
+    masher_res = detect_button_masher(events)
+    session_mashed = masher_res.is_anomaly or any(
+        e.get("anomaly_flag") == "button_masher"
+        or e.get("uncertainty_weight", 1.0) < 0.5
+        or detect_button_masher(e).is_anomaly
+        for e in events
+    )
+
     by: dict[str, list[Event]] = {}
     for e in events:
         s = schema_of(e)
@@ -562,6 +586,16 @@ def task_scores(events: Sequence[Event]) -> dict[str, dict[str, Any]]:
     recovery = _error_recovery(events)
     if recovery:
         out["ErrorRecovery"] = recovery
+
+    if session_mashed:
+        for k, inp in out.items():
+            inp["high_uncertainty"] = True
+            inp["uncertainty_weight"] = 0.10
+            inp["anomaly_flag"] = "button_masher"
+            # Flag data as highly uncertain rather than dropping cognitive ability score
+            if inp["score"] < 50.0:
+                inp["score"] = 50.0
+
     return out
 
 
@@ -630,6 +664,9 @@ def pillar_scores(inputs: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]
             for w, i in used:
                 variance += (w / coverage) ** 2 * (2500 / i["trials"])
             uncertainty = min(MAX_UNCERTAINTY, (1.96 * math.sqrt(variance)) / min(1, coverage / sourceable))
+        # Button masher / high uncertainty anomaly protection (Hackathon Scenario 1)
+        if any(i.get("high_uncertainty") or i.get("anomaly_flag") == "button_masher" or i.get("uncertainty_weight", 1.0) < 0.5 for _, i in used):
+            uncertainty = max(uncertainty, 48.0)
         out[pillar] = {
             "score": total / coverage if coverage >= MIN_COVERAGE else None,
             "uncertainty": uncertainty,

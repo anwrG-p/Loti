@@ -120,6 +120,38 @@ class XAIExplainer:
         safe_rationale, _ = self.safety_guardrail.sanitize(rationale, fallback=NEUTRAL_RATIONALE)
         return safe_rationale
 
+    def explain_assignment_from_pipeline(
+        self,
+        schema_type: Optional[str] = None,
+        recent_rt_drop_ms: Optional[float] = None,
+        fatigue_bucket: Optional[str] = None,
+        adaptation_reason: Optional[str] = None,
+        delta_vector: Optional[Dict[str, float]] = None,
+        uncertainty: Optional[float] = None,
+    ) -> str:
+        """Data-driven justification directly referencing the Brain Twin pipeline.
+        Cites specific metrics (recent response time drop, fatigue heatmap, or pillar uncertainty)
+        with zero black-box reasoning, strictly formatted within Loti's speech bubble rules.
+        """
+        bubbles: List[str] = ["I picked this based on your recent training pipeline."]
+
+        # Data-driven justification citing pipeline metrics
+        if recent_rt_drop_ms is not None and recent_rt_drop_ms > 0:
+            bubbles.append(f"Your reaction time dropped {int(recent_rt_drop_ms)}ms on recent rounds.")
+        elif fatigue_bucket:
+            bubbles.append(f"Your {fatigue_bucket} fatigue heatmap showed focus dips to train.")
+        elif adaptation_reason:
+            bubbles.append(adaptation_reason)
+        elif delta_vector and is_profile_delta(delta_vector):
+            top_p, _ = max(delta_vector.items(), key=lambda kv: abs(kv[1]))
+            p_name = PILLAR_LABELS.get(top_p, top_p)
+            bubbles.append(f"This session calibrates your {p_name} skill.")
+        else:
+            bubbles.append("Your recent rounds showed steady pacing across tasks.")
+
+        bubbles.append("Want to jump into this round now?")
+        return "\n\n".join(bubbles[:3])
+
     def profile_delta_line(
         self, delta_vector: Optional[Dict[str, float]], uncertainty: Optional[float] = None
     ) -> Optional[str]:
