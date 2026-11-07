@@ -349,13 +349,16 @@ def build(key: str, sessions: list[Session], summaries: list[SessionSummary], st
 
     scored = [s for s in summaries if any(v is not None for v in s.pillars.values())]
     if len(scored) < PROFILE_MIN_SESSIONS:
-        return {
+        collab = collaboration_section(key)
+        res = {
             "user_id": key,
             "status": "not_enough_data",
             "sessions": len(sessions),
             "min_sessions": PROFILE_MIN_SESSIONS,
-            "collaboration": collaboration_section(key),
         }
+        if collab.get("status") == "ok" or collab.get("evidence", {}).get("typed_turns", 0) > 0:
+            res["collaboration"] = collab
+        return res
     model, model_reason = cluster_model()
     archetype, archetype_reason = archetype_section(state, model, model_reason)
     forecast, forecast_reason = forecast_section(sessions, h)

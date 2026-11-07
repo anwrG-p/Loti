@@ -53,6 +53,41 @@ export async function fetchProfile(
   }
 }
 
+export async function fetchCollaborationScore(
+  userId = getUserId(),
+  fetchFn: (url: string) => Promise<Response> = fetch,
+): Promise<CollaborationData | null> {
+  if (usingMocks()) {
+    return {
+      status: 'ok',
+      composite_score: 82.5,
+      dimension_scores: {
+        clarification: 85,
+        critical_verification: 75,
+        iteration: 90,
+        autonomy: 80,
+        responsible_use: 100,
+      },
+      dimension_weights: {
+        clarification: 0.2,
+        critical_verification: 0.25,
+        iteration: 0.2,
+        autonomy: 0.2,
+        responsible_use: 0.15,
+      },
+      growth_recommendation: 'Challenge AI suggestions by asking counterexamples or edge cases.',
+      evidence: { typed_turns: 12, marked_turns: { clarification: 4, critical_verification: 3, iteration: 3, autonomy: 2, responsible_use: 0 } },
+    }
+  }
+  try {
+    const res = await fetchFn(`/v1/coach/collaboration-score?user_id=${encodeURIComponent(userId)}`)
+    if (!res.ok) return null
+    return (await res.json()) as CollaborationData
+  } catch {
+    return null
+  }
+}
+
 export function profileToPillars(profile: ProfileResponse): Record<PillarId, PillarScore> | null {
   if (profile.status !== 'ok' || !profile.pillars) return null
   const out = {} as Record<PillarId, PillarScore>

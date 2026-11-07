@@ -12,6 +12,8 @@ import { useLotiActions } from '../features/loti/useLotiActions'
 import type { LotiChoice, LotiMessage } from '../features/loti/types'
 import { useVoiceCoach } from '../features/loti/voiceCoach'
 import { WaveformVisualizer } from '../features/loti/WaveformVisualizer'
+import { AICollaborationCard } from '../features/coach/AICollaborationCard'
+import { fetchCollaborationScore, type CollaborationData } from '../features/insights/profileApi'
 
 /* /coach: the whole talk with Loti in one column. Loti's bubbles on the left, the user's picks on the
    right, the open question's chips at the bottom, and a chat input to ask Loti anything.
@@ -29,7 +31,19 @@ export default function CoachPage({ brain = coachBrain }: { brain?: CoachBrain }
   const [coachConsent, setCoachConsent] = useState(() => tracker.getStatus().coachConsent === 'granted')
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
+  const [collaboration, setCollaboration] = useState<CollaborationData | null>(null)
+  const [showCollab, setShowCollab] = useState(false)
   const baseInputRef = useRef('')
+
+  useEffect(() => {
+    let live = true
+    fetchCollaborationScore().then((data) => {
+      if (live && data) setCollaboration(data)
+    })
+    return () => {
+      live = false
+    }
+  }, [turns.length])
 
   const {
     voiceEnabled,
@@ -148,6 +162,9 @@ export default function CoachPage({ brain = coachBrain }: { brain?: CoachBrain }
       setSending(false)
       setTalking(false)
       focusNext.current = 'log'
+      fetchCollaborationScore().then((data) => {
+        if (data) setCollaboration(data)
+      })
     }
   }
 
@@ -173,34 +190,54 @@ export default function CoachPage({ brain = coachBrain }: { brain?: CoachBrain }
           </div>
         </div>
 
-        {synthesisSupported && (
-          <div className="flex items-center gap-2">
-            {voiceEnabled && (
-              <WaveformVisualizer
-                active={isSpeaking || isListening}
-                mode={isListening ? 'listening' : isSpeaking ? 'speaking' : 'idle'}
-                barCount={10}
-                className="hidden sm:inline-flex"
-              />
-            )}
-            <Button
-              variant={voiceEnabled ? 'secondary' : 'ghost'}
-              size="sm"
-              onClick={toggleVoice}
-              aria-pressed={voiceEnabled}
-              leftIcon={
-                voiceEnabled ? (
-                  <Volume2 size={16} strokeWidth={1.75} aria-hidden="true" />
-                ) : (
-                  <VolumeX size={16} strokeWidth={1.75} aria-hidden="true" />
-                )
-              }
-            >
-              {voiceEnabled ? 'Voice on' : 'Voice off'}
-            </Button>
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowCollab((v) => !v)}
+            aria-expanded={showCollab}
+            aria-label="AI Collaboration Score"
+            className="focus-ring flex items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-semibold text-ink hover:bg-surface-raised cursor-pointer transition-colors"
+          >
+            <span className="inline-block size-2 rounded-full bg-brand" aria-hidden="true" />
+            <span>
+              {collaboration?.status === 'ok' && typeof collaboration.composite_score === 'number'
+                ? `Collab: ${Math.round(collaboration.composite_score)}`
+                : `Collab: ${collaboration?.evidence?.typed_turns ?? 0}/10`}
+            </span>
+          </button>
+          {synthesisSupported && (
+            <>
+              {voiceEnabled && (
+                <WaveformVisualizer
+                  active={isSpeaking || isListening}
+                  mode={isListening ? 'listening' : isSpeaking ? 'speaking' : 'idle'}
+                  barCount={10}
+                  className="hidden sm:inline-flex"
+                />
+              )}
+              <Button
+                variant={voiceEnabled ? 'secondary' : 'ghost'}
+                size="sm"
+                onClick={toggleVoice}
+                aria-pressed={voiceEnabled}
+                leftIcon={
+                  voiceEnabled ? (
+                    <Volume2 size={16} strokeWidth={1.75} aria-hidden="true" />
+                  ) : (
+                    <VolumeX size={16} strokeWidth={1.75} aria-hidden="true" />
+                  )
+                }
+              >
+                {voiceEnabled ? 'Voice on' : 'Voice off'}
+              </Button>
+            </>
+          )}
+        </div>
       </div>
+
+      {showCollab && (
+        <AICollaborationCard collaboration={collaboration} />
+      )}
 
       {voiceEnabled && synthesisSupported && (
         <div role="group" aria-label="Speech pace" className="flex items-center justify-end gap-1.5 text-xs text-ink-muted">
@@ -360,6 +397,18 @@ export default function CoachPage({ brain = coachBrain }: { brain?: CoachBrain }
           </div>
         )}
       </form>
+
+      {collaboration?.status === 'ok' && !showCollab && (
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={() => setShowCollab(true)}
+            className="focus-ring text-xs font-semibold text-brand hover:underline cursor-pointer"
+          >
+            AI Collaboration Score: {Math.round(collaboration.composite_score!)}/100 · View breakdown
+          </button>
+        </div>
+      )}
 
       {turns.length > 0 && (
         <div className="flex justify-center">

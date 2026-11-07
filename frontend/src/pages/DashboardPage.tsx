@@ -14,7 +14,7 @@ import {
   weakestPillar,
   type GoalLine,
 } from '../features/insights/dashboard'
-import { fetchProfile, profileToPillars, type ProfileResponse } from '../features/insights/profileApi'
+import { fetchCollaborationScore, fetchProfile, profileToPillars, type ProfileResponse } from '../features/insights/profileApi'
 import { usingMocks } from '../features/assessment/tasks/taskSource'
 import { hasGoalsForYear, useGoalsStore, weeklyGoal, weeklyGoalText, type WeeklyGoal } from '../features/insights/goals'
 import { AICollaborationCard } from '../features/coach/AICollaborationCard'
@@ -64,11 +64,36 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<ProfileResponse | null>(null)
 
   useEffect(() => {
-    if (usingMocks()) return
     let live = true
     const load = () => {
+      if (usingMocks()) {
+        fetchCollaborationScore().then((collab) => {
+          if (live && collab) {
+            setProfile((p) =>
+              p
+                ? { ...p, collaboration: collab }
+                : { user_id: 'mock', status: 'ok', sessions: 0, min_sessions: 1, collaboration: collab },
+            )
+          }
+        })
+        return
+      }
       fetchProfile().then((data) => {
-        if (live && data) setProfile(data)
+        if (!live) return
+        if (data) {
+          setProfile(data)
+          if (!data.collaboration) {
+            fetchCollaborationScore().then((collab) => {
+              if (live && collab) setProfile((prev) => (prev ? { ...prev, collaboration: collab } : null))
+            })
+          }
+        } else {
+          fetchCollaborationScore().then((collab) => {
+            if (live && collab) {
+              setProfile({ user_id: 'guest', status: 'not_enough_data', sessions: 0, min_sessions: 1, collaboration: collab })
+            }
+          })
+        }
       })
     }
     load()
@@ -154,7 +179,7 @@ export default function DashboardPage() {
         <ProgressCurve history={history} now={now} />
       </section>
 
-      <Explore>
+      <Explore defaultOpen={typeof window !== 'undefined' && (window.location.hash === '#collaboration' || window.location.search.includes('collaboration'))}>
         <Why
           weakest={weakest}
           pillars={pillars}
@@ -174,9 +199,12 @@ export default function DashboardPage() {
   )
 }
 
-function Explore({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false)
+function Explore({ children, defaultOpen = false }: { children: ReactNode; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen)
   const id = useId()
+  useEffect(() => {
+    if (defaultOpen) setOpen(true)
+  }, [defaultOpen])
   return (
     <section aria-label="More about my training" className="border-t border-border pt-4">
       <button

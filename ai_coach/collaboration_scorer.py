@@ -364,23 +364,25 @@ MIN_DIMENSIONS = 3
 # Markers on lowercased typed turns. A turn counts at most once per dimension.
 EVIDENCE_MARKERS: Dict[str, Pattern[str]] = {
     CollaborationDimension.CLARIFICATION.value: re.compile(
-        r"\b(?:why|how (?:do|does|did|can|could|should|come|to)|what (?:can|could|do|does|did|is|are|to)|"
-        r"what do you mean|explain|clarify|help|for example|an example|break (?:it |this )?down|"
-        r"what is the (?:rule|goal|point of this))\b"
+        r"\b(?:why|how (?:do|does|did|can|could|should|come|to)?|what (?:can|could|do|does|did|will|would|is|are|about|to)?|"
+        r"what do you mean|explain|clarify|help|for example|an example|break (?:it |this )?down|step by step|guide|"
+        r"what is the (?:rule|goal|point of this)|tell me|understand|learn)\b"
     ),
     CollaborationDimension.CRITICAL_VERIFICATION.value: re.compile(
         r"\b(?:are you (?:sure|an? ai|a bot|real|human)|is (?:that|this|it) (?:right|correct|true|real|accurate|effective|a default|automated|scripted)|"
         r"(?:are|is) (?:they|it|this|these) (?:effective|working|accurate|useful)|"
         r"verify|double[- ]check|check (?:that|this|it|again)|source|what if|counter[- ]?example|evidence|assumption|validate|"
-        r"disagree|not (?:my |accurate)|distract)\b"
+        r"disagree|not (?:in |my |accurate)|distract|recall|does (?:it|this|that|deep memory) help)\b"
     ),
     CollaborationDimension.ITERATION.value: re.compile(
         r"\b(?:instead|rather|another (?:way|one|round|exercise)|try again|one more (?:time)?|tweak|adjust|modify|"
-        r"different (?:way|approach|strategy)|next (?:time|step|round|exercise)|refine|again|repeat)\b"
+        r"different (?:way|approach|strategy)|next (?:time|step|round|exercise)|refine|again|repeat|step by step|"
+        r"improve|better|practice|train|more|progress)\b"
     ),
     CollaborationDimension.AUTONOMY.value: re.compile(
         r"\b(?:i think|i tried|i need|my approach|my strategy|i decided|i solved|my solution|i noticed|"
-        r"i figured|my guess|let me try|i'll try|i want to|i will|let's|can you type|type [\"']?\w+)\b"
+        r"i figured|my guess|let me try|i'll try|i want to|i will|let's|can you type|type [\"']?\w+|"
+        r"no\b|yes\b|myself|i can)\b"
     ),
     # Misuse only: no phrase shows responsible use, so this dimension can only lose points.
     CollaborationDimension.RESPONSIBLE_USE.value: re.compile(

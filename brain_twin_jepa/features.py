@@ -151,6 +151,10 @@ def _ok(e: Event) -> bool:
     return not e.get("error_flag")
 
 
+def _rt(e: Event) -> float:
+    return float(e.get("response_time_ms") or 0.0)
+
+
 def _share(es: Sequence[Event], f: Callable[[Event], bool]) -> float:
     return sum(1 for e in es if f(e)) / len(es)
 
