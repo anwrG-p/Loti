@@ -34,8 +34,8 @@ from ai_coach.llm_gemini import GeminiBlocked, GeminiError
 DEFAULT_MODEL = "google/gemini-2.5-flash"
 TIMEOUT_S = 3.0
 DEFAULT_API_URL = "https://openrouter.ai/api/v1/chat/completions"
-DEFAULT_SITE_URL = "https://synapsetwin.app"
-DEFAULT_SITE_NAME = "SynapseTwin"
+DEFAULT_SITE_URL = "https://loti.app"
+DEFAULT_SITE_NAME = "Loti"
 MAX_OUTPUT_TOKENS = 256
 
 WORKERS = 8

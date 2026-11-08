@@ -1,4 +1,4 @@
-# SynapseTwin brand v2: design and routing
+# Loti brand v2: design and routing
 
 This is the current design and route map of the web app (`frontend/`). The binding spec, with every rule and ruling, is `.scratch/brand-v2/spec.md`. This file is the short version for anyone opening the code.
 
@@ -42,7 +42,7 @@ The look follows four reference images in [`references/`](references/):
 - **Momo** is the dolphin. Its moods (calm, happy, tired, frustrated, focused) show by face, fin pose and posture, so colour is never the only signal; frustrated takes warm amber accents, never red. `celebrate` is the leap with splash marks, used on Results.
 - Motion follows R8: entrances, celebrations and state changes only, all of it off under reduced motion.
 
-**Logo.** The mark is Loti's bust inside an open circle arc. The header shows the mark on phones and the mark plus the "SynapseTwin" wordmark (Quicksand) from `sm` up. The favicon is the same mark.
+**Logo.** The mark is Loti's bust inside an open circle arc. The header shows the mark on phones and the mark plus the "Loti" wordmark (Quicksand) from `sm` up. The favicon is the same mark.
 
 **Board background.** `body` is the off-white page margin (`--color-page`). `#root` is the board (`--color-canvas` plus the dot grid, rounded and clipped). Its `::before` and `::after` draw the blobs: flat `--color-blob-sky` and `--color-blob-coral` shapes masked into the corners, behind all content (`z-index: -1` inside the board's isolated stacking context), no pointer events and no motion. They are pale enough that every text colour keeps AA contrast on them (audited). Don't paint an opaque page background inside `#root`, or it hides the board and the blobs. In dark mode the cards (`--color-surface`, `-raised`, `--color-border`, `--color-brand-subtle`) are green slate, the chalkboard's own hue; a test keeps them within 30° of it.
 

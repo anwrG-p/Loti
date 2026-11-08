@@ -11,13 +11,14 @@ What the product is and how to run it: the [root README](../README.md).
 | [architecture/TASKS_AND_DIMENSIONS.md](architecture/TASKS_AND_DIMENSIONS.md) | The exercises, their telemetry dimensions and the skill each one feeds. |
 | [architecture/EMILY_BEHAVIORAL_EMOTION_ENGINE.md](architecture/EMILY_BEHAVIORAL_EMOTION_ENGINE.md) | The on-device mood rules behind Momo, and their legal and evidence limits. |
 | [architecture/SEQUENCE_DIAGRAMS.md](architecture/SEQUENCE_DIAGRAMS.md) | Data flow between the modules. |
-| [architecture/MEMBER2_HANDOVER.md](architecture/MEMBER2_HANDOVER.md) | The `ai_coach` package: safety guardrails, collaboration scorer, explainer. |
 | [ui/contracts.md](ui/contracts.md) | Frontend–server API contracts and their status. |
 | [ui/JUDGES-UI.md](ui/JUDGES-UI.md) | Rubric criteria mapped to screens. |
 | [research/](research/) | Dated evidence reviews. The latest is [2026-10-31](research/2026-10-31-improvement-opportunities.md). |
 | [agents/](agents/) | Conventions for coding agents (issue tracker, triage labels, domain docs). |
 
-## History (kept as a record, not maintained)
-- [architecture/TEAM_PLAN.md](architecture/TEAM_PLAN.md): the original five-member challenge plan.
+## History & Archive (kept as a record, not maintained)
+- [archive/TEAM_PLAN.md](archive/TEAM_PLAN.md): the original five-member challenge plan.
+- [archive/MEMBER1_HANDOVER.md](archive/MEMBER1_HANDOVER.md): original telemetry & assessment handover.
+- [archive/MEMBER2_HANDOVER.md](archive/MEMBER2_HANDOVER.md): original AI coach & safety guardrail handover.
 
 Links are relative. `tests/test_docs_links.py` fails on broken links and on any `file:///` link.

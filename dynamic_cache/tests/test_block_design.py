@@ -1,4 +1,4 @@
-"""Block designs from the research (assessment_engine/HANDOVER.md "Block designs") and trial counts."""
+"""Block designs from the research (docs/archive/MEMBER1_HANDOVER.md "Block designs") and trial counts."""
 
 from __future__ import annotations
 

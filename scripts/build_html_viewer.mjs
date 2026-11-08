@@ -56,7 +56,7 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SynapseTwin Sequence Diagrams & Architecture Viewer</title>
+  <title>Loti Sequence Diagrams & Architecture Viewer</title>
   <style>
     :root {
       --bg: #F8FAFC;
@@ -304,7 +304,7 @@ const html = `<!DOCTYPE html>
   <header>
     <div class="brand">
       <span class="badge">CISTAC 1.0</span>
-      <h1>SynapseTwin Sequence Diagrams & Architecture Visualizer</h1>
+      <h1>Loti Sequence Diagrams & Architecture Visualizer</h1>
     </div>
     <div class="header-links">
       <a href="SEQUENCE_DIAGRAMS.md">📄 Open SEQUENCE_DIAGRAMS.md</a>

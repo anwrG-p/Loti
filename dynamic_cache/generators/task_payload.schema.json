@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "TaskPayload",
-  "description": "GET /v1/tasks/next reply. Mirrors TaskPayload and the *Params types in frontend/src/features/assessment/telemetry/types.ts, plus the rules the client enforces (assessment_engine/HANDOVER.md, Member 5). dynamic_cache/tests/test_schema.py (when frontend/ is present) fails when types.ts and this file drift apart.",
+  "description": "GET /v1/tasks/next reply. Mirrors TaskPayload and the *Params types in frontend/src/features/assessment/telemetry/types.ts, plus the rules the client enforces (docs/archive/MEMBER1_HANDOVER.md, Member 5). dynamic_cache/tests/test_schema.py (when frontend/ is present) fails when types.ts and this file drift apart.",
   "type": "object",
   "additionalProperties": false,
   "required": [

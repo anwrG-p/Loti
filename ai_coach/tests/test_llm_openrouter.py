@@ -95,7 +95,7 @@ def test_happy_path_chat_completion():
     req = seen[0]
     assert req.headers["authorization"] == f"Bearer {KEY}"
     assert req.headers["content-type"] == "application/json"
-    assert "synapsetwin" in req.headers["http-referer"].lower()
+    assert "loti" in req.headers["http-referer"].lower()
 
 
 def test_json_schema_triggers_json_object_response_format():

@@ -1,8 +1,8 @@
-# SynapseTwin: Comprehensive Project & Technical Report
+# Loti: Comprehensive Project & Technical Report
 ## CISTAC 1.0 — AI4Brain Cognitive Growth Agent
 
 **Organized by:** IEEE Student Branch, IEEE FSS SB Chapter, IEEE Tunisia Section, IEEE Computational Intelligence Society (Tunisia Chapter & ENIS CIS Chapter), Faculty of Sciences of Sfax  
-**Platform Name:** SynapseTwin  
+**Platform Name:** Loti  
 **Project Version:** 1.0.0 (Production Verified)  
 **Target Milestone:** Phase 1 Preselection Submission (01/11/2026) & Phase 2 Pitch Defense (07/11/2026)  
 **Verification Status:** 3,100+ Automated Tests Passing (Frontend QA Green + Backend Pytest Green)  
@@ -14,11 +14,11 @@
 > [!IMPORTANT]
 > **Challenge Evaluation Rule:** *Anything not explicitly mandated in the official challenge flyer is evaluated as an advanced bonus feature.*
 >
-> While many teams will implement only the baseline specifications, **SynapseTwin** was engineered from day one as an over-delivering, production-grade platform. In addition to the three explicit bonuses listed in Section 4 of the challenge brief (Voice, Emotion-Aware AI, Predictive Growth), SynapseTwin incorporates **10 major architectural, algorithmic, psychometric, and safety bonuses** that provide an overwhelming competitive moat across both Phase A (Preselection) and Phase B (Final Defense).
+> While many teams will implement only the baseline specifications, **Loti** was engineered from day one as an over-delivering, production-grade platform. In addition to the three explicit bonuses listed in Section 4 of the challenge brief (Voice, Emotion-Aware AI, Predictive Growth), Loti incorporates **10 major architectural, algorithmic, psychometric, and safety bonuses** that provide an overwhelming competitive moat across both Phase A (Preselection) and Phase B (Final Defense).
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────┐
-│                               SYNAPSETWIN CAPABILITY SPECTRUM                           │
+│                                   LOTI CAPABILITY SPECTRUM                              │
 ├────────────────────────────────────────────────────────┬────────────────────────────────┤
 │           MANDATED CORE (Flyer Baseline)               │      ADVANCED BONUS FEATURES   │
 ├────────────────────────────────────────────────────────┼────────────────────────────────┤
@@ -74,11 +74,11 @@
 
 ## 1. Executive Summary & System Philosophy
 
-**SynapseTwin** is an autonomous, calm, and privacy-preserving cognitive growth agent developed specifically for the **CISTAC 1.0 (AI4Brain)** challenge. While traditional cognitive testing tools subject individuals to anxiety-inducing, one-off diagnostic batteries that label users with clinical pathology, SynapseTwin establishes a continuous, empowering closed-loop training ecosystem.
+**Loti** is an autonomous, calm, and privacy-preserving cognitive growth agent developed specifically for the **CISTAC 1.0 (AI4Brain)** challenge. While traditional cognitive testing tools subject individuals to anxiety-inducing, one-off diagnostic batteries that label users with clinical pathology, Loti establishes a continuous, empowering closed-loop training ecosystem.
 
 ```
        ┌────────────────────────────────────────────────────────┐
-       │                 SYNAPSETWIN CLOSED LOOP                │
+       │                   LOTI CLOSED LOOP                     │
        └────────────────────────────────────────────────────────┘
                                    │
                                    ▼
@@ -116,9 +116,9 @@
 ```
 
 ### Core Architectural Tenets
-1. **Spec U5 Non-Clinical Mandate ("We don't measure your brain"):** SynapseTwin is strictly for personal training and self-reflection. It eliminates clinical diagnostic jargon (ADHD, dementia, cognitive deficit, cortical brain-region mappings). Cognitive fitness is framed in accessible, empowering consumer vocabulary.
+1. **Spec U5 Non-Clinical Mandate ("We don't measure your brain"):** Loti is strictly for personal training and self-reflection. It eliminates clinical diagnostic jargon (ADHD, dementia, cognitive deficit, cortical brain-region mappings). Cognitive fitness is framed in accessible, empowering consumer vocabulary.
 2. **Privacy-First Anonymous Architecture (Spec R13 & ADR 0001):** Telemetry is tied to anonymous, client-generated device identifiers (`anon_dev_*`) without mandatory account registration. Raw trial scoring occurs client-side on the device; zero telemetry leaves the client without explicit opt-in ("Save my answers").
-3. **Rigorous Uncertainty & Scientific Truth (Spec R15 & Ruling R17):** Real human cognitive performance is inherently noisy. SynapseTwin represents performance as interval estimates (score $\pm$ uncertainty $\sigma$) rather than deceptive point estimates. Forward projection ribbons are kept strictly in shadow mode until empirically validated on human cohorts.
+3. **Rigorous Uncertainty & Scientific Truth (Spec R15 & Ruling R17):** Real human cognitive performance is inherently noisy. Loti represents performance as interval estimates (score $\pm$ uncertainty $\sigma$) rather than deceptive point estimates. Forward projection ribbons are kept strictly in shadow mode until empirically validated on human cohorts.
 4. **Zero Server-Side Emotion Recognition (ADR 0002 & EU AI Act Art 50(3)):** Affective support (Momo the Dolphin) relies on client-side heuristic mood proposals that users can freely adjust. Telemetry jitter is never fed into server-side emotion recognition models, fully protecting user autonomy and privacy under EU AI Act Annex III regulations.
 
 ---
@@ -127,7 +127,7 @@
 
 Every single requirement from the challenge brief is fully implemented, verified, and mapped below:
 
-| Challenge Specification | Required Scope | SynapseTwin Implementation | Verification Source |
+| Challenge Specification | Required Scope | Loti Implementation | Verification Source |
 | :--- | :--- | :--- | :--- |
 | **Section 1: Scope & Topic** | Continuous assessment, personalized coaching, adaptive learning paths. | 11 procedural exercises, dynamic IRT staircasing, Loti AI Coach, dynamic practice archetypes. | `dynamic_cache/`, `ai_coach/`, `clustering_engine/` |
 | **Section 2: Assess** | Profile across cognitive dimensions non-clinically. | 5 Consumer Pillars (Focus & Strategy, Mental Agility, Impulse Control, Deep Memory, Visual Radar). | `frontend/src/features/insights/pillars.ts`, `docs/architecture/TASKS_AND_DIMENSIONS.md` |
@@ -147,11 +147,11 @@ Every single requirement from the challenge brief is fully implemented, verified
 
 ## 3. The Extended Bonus Catalog: Innovations Beyond the Brief
 
-By application of the rule—***"Anything that is not mentioned in that PDF is considered a bonus"***—SynapseTwin boasts an unprecedented array of innovations that far exceed any standard competition entry:
+By application of the rule—***"Anything that is not mentioned in that PDF is considered a bonus"***—Loti boasts an unprecedented array of innovations that far exceed any standard competition entry:
 
 ```
                                     ┌────────────────────────────────────────────────────────┐
-                                    │       SYNAPSETWIN EXTENDED BONUS ARCHITECTURE          │
+                                    │          LOTI EXTENDED BONUS ARCHITECTURE              │
                                     └────────────────────────────────────────────────────────┘
                                                                 │
          ┌──────────────────────────────────────────────────────┼──────────────────────────────────────────────────────┐
@@ -162,7 +162,7 @@ By application of the rule—***"Anything that is not mentioned in that PDF is c
 │ • SAT-JEPA Leaky Integrator     │                    │ • Algorithmic 7-Bias Mitigators │                    │ • Generalisation Judge (?judge) │
 │ • EMA Target Encoder (τ=0.996)  │                    │ • 4-Layer Crisis Intervention   │                    │ • TimedBloom Deduplication      │
 │ • Split-Conformal Calibrations  │                    │ • Strict Banned-Terms Linter    │                    │ • 100% WCAG AAA Tokens (v2)     │
-│ • 9-Cluster GMM Archetypes      │                    │ • Reliable Change Index (RCI)   │                    │ • Dynamic Colorblind Ink Sets   │
+│ • Dynamic GMM Archetypes        │                    │ • Reliable Change Index (RCI)   │                    │ • Dynamic Colorblind Ink Sets   │
 │ • Schmitt-Trigger Hysteresis    │                    │ • Two-Tier Stereotype Shield    │                    │ • 3,100+ Automated Tests Suite  │
 └─────────────────────────────────┘                    └─────────────────────────────────┘                    └─────────────────────────────────┘
 ```
@@ -170,13 +170,13 @@ By application of the rule—***"Anything that is not mentioned in that PDF is c
 ### Detailed Breakdown of the 10 Extended Bonuses:
 
 1. **Bonus #1: SAT-JEPA Deep Representation Learning**  
-   *Beyond the brief's generic mention of "predictive growth":* SynapseTwin engineers a custom **Joint-Embedding Predictive Architecture (JEPA)** with a learned leaky integrator ($s̄_t = a \odot s̄_{t-1} + (1-a) \odot e_t$), exponential moving average target encoder ($\tau = 0.996$), and soft-anchor regularizer to completely eliminate representation collapse.
+   *Beyond the brief's generic mention of "predictive growth":* Loti engineers a custom **Joint-Embedding Predictive Architecture (JEPA)** with a learned leaky integrator ($s̄_t = a \odot s̄_{t-1} + (1-a) \odot e_t$), exponential moving average target encoder ($\tau = 0.996$), and soft-anchor regularizer to completely eliminate representation collapse.
 
 2. **Bonus #2: Split-Conformal Prediction Interval Bounds**  
-   *Beyond standard regression lines:* SynapseTwin derives calibrated non-parametric split-conformal bounds ($\text{Var}_h = a + b \cdot h$) that widen realistically with forecast horizons, operating strictly under **Ruling R17 Shadow-Mode** to prevent deceptive certainty.
+   *Beyond standard regression lines:* Loti derives calibrated non-parametric split-conformal bounds ($\text{Var}_h = a + b \cdot h$) that widen realistically with forecast horizons, operating strictly under **Ruling R17 Shadow-Mode** to prevent deceptive certainty.
 
-3. **Bonus #3: 9 Practice Style Archetypes via Unsupervised GMM**  
-   *Beyond static scoring:* An unsupervised 9-component Gaussian Mixture Model classifies training behaviors into positive practice archetypes ("Steady planner", "Nimble switcher", "Methodical solver"), adapting coaching style to user habits.
+3. **Bonus #3: Dynamic Practice Style Archetypes via Bounded GMM**  
+   *Beyond static scoring:* A dynamic Gaussian Mixture Model (BIC minimization + 5% mass gate) classifies training behaviors into positive practice archetypes, adapting coaching style to user habits.
 
 4. **Bonus #4: Schmitt-Trigger Hysteresis Gating ($\Delta_{\text{hyst}} = 0.15, N_{\text{confirm}} = 3$)**  
    *Beyond standard classifiers:* Borrowed from electrical engineering, this hysteresis gate prevents boundary-chattering oscillations when a user's scores hover between two archetypes, ensuring behavioral classification stability.
@@ -204,7 +204,7 @@ By application of the rule—***"Anything that is not mentioned in that PDF is c
 ## 4. Layer A — Continuous Assessment & Dynamic Profiling
 
 ### 4.1 The 11 Gamified Neuropsychological Exercises
-SynapseTwin translates validated neuropsychological paradigms into web-accessible, gamified exercises:
+Loti translates validated neuropsychological paradigms into web-accessible, gamified exercises:
 
 | Exercise Name | Canonical Schema | Neuropsychological Paradigm | Primary Measurement & Scored Mechanism |
 | :--- | :--- | :--- | :--- |
@@ -257,9 +257,9 @@ Trial events are transmitted via `POST /v1/telemetry/event` under strict schema 
 ```
 
 ### 4.4 Psychometric Rigor & Algorithmic Mitigation of 7 Measurement Biases
-SynapseTwin directly tackles the 7 major biases inherent in unconstrained web-based cognitive testing:
+Loti directly tackles the 7 major biases inherent in unconstrained web-based cognitive testing:
 
-| Bias Type | Threat to Measurement Validity | SynapseTwin Algorithmic Mitigation |
+| Bias Type | Threat to Measurement Validity | Loti Algorithmic Mitigation |
 | :--- | :--- | :--- |
 | **1. Display Refresh Rate** | Variable monitor refresh ($60\text{Hz}$ vs $144\text{Hz}$) distorts sub-second stimulus presentation times. | UFOV logs `shown_ms` derived from `requestAnimationFrame` hardware timestamps rather than theoretical intervals. |
 | **2. Random / Rapid Guessing** | Disengaged participants mash buttons, artificially generating fast reaction times. | Integrated chance floor gates ($p_0$ correction); rapid button mashing yields a 0 score rather than high agility. |
@@ -270,7 +270,7 @@ SynapseTwin directly tackles the 7 major biases inherent in unconstrained web-ba
 | **7. Device & Low-Effort Variance** | Touchscreens vs mechanical keyboards induce systematic motor latency differentials. | Automated low-effort flagging: reaction times $<150\text{ ms}$, timeout rates $>50\%$, or repetitive key presses $>90\%$. |
 
 ### 4.5 Mandatory Non-Biometric Architecture & Multimodal Toggles
-SynapseTwin enforces a **strictly non-biometric baseline mode**. No biometric face scanning, eye tracking, or keystroke biometrics are required or enabled by default. An optional voice mode (`voice_opt_in: true`) utilizes standard browser Web Speech APIs. As mandated by challenge rules, no sensitive coaching or diagnostic decision is ever based on facial or voice telemetry.
+Loti enforces a **strictly non-biometric baseline mode**. No biometric face scanning, eye tracking, or keystroke biometrics are required or enabled by default. An optional voice mode (`voice_opt_in: true`) utilizes standard browser Web Speech APIs. As mandated by challenge rules, no sensitive coaching or diagnostic decision is ever based on facial or voice telemetry.
 
 ### 4.6 Historised Dynamic Brain Twin: Snapshots & Fatigue Heatmaps
 The Brain Twin profile service (`brain_twin_jepa/profile.py`) delivers deep historical longitudinal tracking:
@@ -285,7 +285,7 @@ The Brain Twin profile service (`brain_twin_jepa/profile.py`) delivers deep hist
 The platform's primary guide is **Loti**, a calm, encouraging axolotl companion. Loti communicates in plain, growth-oriented language, offering bounded conversational chips to minimize decision fatigue while replacing punitive feedback with gentle scaffolding.
 
 ### 5.2 Two-Tier Communication Architecture (ADR 0001)
-To reconcile scientific rigor with user-facing accessibility, SynapseTwin implements a strict **Two-Tier Separation**:
+To reconcile scientific rigor with user-facing accessibility, Loti implements a strict **Two-Tier Separation**:
 1. **Tier 1 (Consumer UI Copy):** Kept radically simple, non-stigmatizing, and empowering. Scores are presented as intuitive $0–100$ fitness ratings; adaptation reasons are expressed without confusing statistical jargon.
 2. **Tier 2 (Deep Psychometric Telemetry & Methodology):** Rigorous mathematical formulas, $d'$ sensitivity values, $SSRT$ integration calculations, and conformal bounds are consolidated into a dedicated, inspectable **"How we calculate this"** page (`/methodology`).
 
@@ -297,7 +297,7 @@ The coaching pipeline implements multi-layered safety guardrails:
 4. **Strict Output Guardrail (`banned_terms.json`):** Pre-compiled regex linter that scrubs or withholds any response containing diagnostic labels (ADHD, autism, dementia), guilt-inducing phrasing ("you failed", "your score dropped"), brain-region terms ("prefrontal cortex"), or neuroplasticity hype. Tripped responses are withheld completely and replaced with a verified safe fallback.
 
 ### 5.4 Explainability Engine: XAI Adaptation Rationale (`why_this`)
-Rather than acting as an inscrutable black box, SynapseTwin transparently justifies every task adaptation through the `why_this` trail:
+Rather than acting as an inscrutable black box, Loti transparently justifies every task adaptation through the `why_this` trail:
 - *Task Progression:* *"Logic Web got a little harder because your recent rounds went well."*
 - *Task De-escalation:* *"Arrow Focus got a little easier so you can reset your rhythm."*
 - *Archetype Shift:* *"Your practice style now reads as Nimble switcher as you adapted across conflicting cues."*
@@ -314,7 +314,7 @@ The `dynamic_cache/` service eliminates repetitive gameplay through procedural s
 - **Pre-Generated Hot Pools:** Sub-millisecond task dispatch via pre-warmed priority queues indexed by difficulty step ($1–10$).
 
 ### 6.2 Adaptive Difficulty Calibration: The 85% Success Rate Rule
-Grounded in learning theory (Wilson et al., 2019), SynapseTwin automatically adjusts task complexity to target an **$85\%$ success rate**: successive correct trials incrementally step difficulty up along calibrated Item Response Theory (IRT) staircases, while errors trigger gentle downward adjustments to prevent cognitive burnout.
+Grounded in learning theory (Wilson et al., 2019), Loti automatically adjusts task complexity to target an **$85\%$ success rate**: successive correct trials incrementally step difficulty up along calibrated Item Response Theory (IRT) staircases, while errors trigger gentle downward adjustments to prevent cognitive burnout.
 
 ### 6.3 Interactive Dashboard Visualizations
 - **5-Spoke Uncertainty Radar (`PillarRadar.tsx`):** Renders the user's multi-pillar profile with dynamic SVG geometry, displaying whole numbers with confidence ranges in an accessible table toggle (e.g., *"62 · likely 55–69"*).
@@ -401,7 +401,7 @@ The `clustering_engine/` fits a 9-component Gaussian Mixture Model (GMM) over no
 
 ### 10.1 Phase A: Preselection Criteria (60% Total Weight)
 
-| Evaluation Criterion | Weight | SynapseTwin Implementation & Competitive Moat |
+| Evaluation Criterion | Weight | Loti Implementation & Competitive Moat |
 | :--- | :--- | :--- |
 | **Relevance** | **20%** | 100% faithful to the AI4Brain brief. Seamless closed loop: continuous assessment, uncertainty-aware profiling, explainable coaching, and adaptive procedural learning. |
 | **Quality** | **20%** | Production-grade software engineering: 3,100+ passing automated tests, TypeScript strict mode, FastAPI gateway, robust error handling across all HTTP status codes (413, 422, 429, 501, 503). |
@@ -416,7 +416,7 @@ The `clustering_engine/` fits a 9-component Gaussian Mixture Model (GMM) over no
 | :--- | :--- | :--- |
 | **Generalisation** | **25%** | **The Judge Tool (`?judge=1`):** Demonstrates real-time reconfiguration of the cognitive engine across 3, 6, 7, 8, and 10 dimension models (`FULL_DIMENSION_POOL`), proving cross-task generalisation. |
 | **Robustness** | **25%** | Full test pyramid: unit, integration, and Playwright end-to-end suites. Resilient offline-first mock fallback mode (`VITE_USE_MOCKS`); graceful handling of dropped connections and rate limits. |
-| **Profile Quality** | **20%** | Rigorous psychometric modelling: binomial standard error bounds, chance floor gates, $RCI \ge 1.96$ practice effect gating, 9 GMM practice archetypes. |
+| **Profile Quality** | **20%** | Rigorous psychometric modelling: binomial standard error bounds, chance floor gates, $RCI \ge 1.96$ practice effect gating, dynamic GMM practice archetypes. |
 | **Plan Relevance** | **15%** | Personalised adaptive staircasing targeting an 85% success rate; weekly habit-forming goal tracking (3 sessions/week + 1 skip grace). |
 | **Defense & Pitch** | **15%** | 8-minute presentation structure, 5-minute technical defense script, rapid response protocols for the 24-hour surprise challenge element. |
 
@@ -431,4 +431,4 @@ All deliverables specified in Section 3 and Section 8 of the challenge brief are
 - [x] **Technical Report (Max 8 Pages):** Concise IEEE-formatted paper detailing cognitive science foundations, architecture, JEPA model, and evaluation benchmarks.
 - [x] **Presentation Deck (Max 15 Slides):** Visual, high-impact slide deck for Phase 1 submission and Phase 2 defense.
 
-With **3,100+ passing automated tests**, 100% WCAG AAA accessibility, full GDPR and EU AI Act compliance, and 12 distinct bonus innovation layers, SynapseTwin represents an unbeatable entry for CISTAC 1.0.
+With **3,100+ passing automated tests**, 100% WCAG AAA accessibility, full GDPR and EU AI Act compliance, and 12 distinct bonus innovation layers, Loti represents an unbeatable entry for CISTAC 1.0.

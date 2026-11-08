@@ -210,7 +210,7 @@ class AICoachAgent:
         # Cache base prompt
         self.system_prompt_base = _load_prompt_template(
             "system_coach.txt",
-            fallback_default="You are Loti, a guide inside SynapseTwin. Warm, short, specific.",
+            fallback_default="You are Loti, a guide inside Loti. Warm, short, specific.",
         )
 
     def assemble_system_prompt(

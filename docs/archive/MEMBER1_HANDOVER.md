@@ -1,6 +1,6 @@
 # Member 1 handover: for the other members' agents
 
-Member 1 (`assessment_engine/`) delivers tasks to the user and turns every trial into a telemetry event. Read this before you integrate with it. The source of truth for every field, limit and command is [`README.md`](README.md); this file only adds what the code can't tell you.
+Member 1 (`assessment_engine/`) delivers tasks to the user and turns every trial into a telemetry event. Read this before you integrate with it. The source of truth for every field, limit and command is [`README.md`](../../assessment_engine/README.md); this file only adds what the code can't tell you.
 
 - Server contract: `backend/app/api/routes/v1_telemetry.py` (`TelemetryEvent`, `POST /v1/telemetry/event`)
 - Client contract: `frontend/src/features/assessment/telemetry/types.ts` (`TaskPayload`, the `*Params` types)

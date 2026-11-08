@@ -4,7 +4,7 @@ This guide explains what I built, how the pieces fit together, and why each desi
 
 > Other files cover different needs:
 > - [`README.md`](README.md): exact contracts and run commands.
-> - [`HANDOVER.md`](HANDOVER.md): what teammates need to know.
+> - [`../docs/archive/MEMBER1_HANDOVER.md`](../docs/archive/MEMBER1_HANDOVER.md): what teammates need to know (archived).
 >
 > This file is the explanation.
 
@@ -12,7 +12,7 @@ This guide explains what I built, how the pieces fit together, and why each desi
 
 ## 1. The big picture
 
-The platform (CISTAC / SynapseTwin) is a **closed loop** that measures how someone thinks, models it, and adapts what they practise next:
+The platform (CISTAC / Loti) is a **closed loop** that measures how someone thinks, models it, and adapts what they practise next:
 
 ```
  ┌──────────────── Member 1 (me) ────────────────┐
@@ -42,10 +42,9 @@ Everything I built is in `assessment_engine/`, except the maintained client, whi
 | Folder | Role |
 |---|---|
 | `backend/app/` (repo root) | The one Python **FastAPI** server (BE-00). Its `api/routes/v1_telemetry.py` **receives** telemetry and saves it. It replaced `assessment_engine/api/` |
-| `frontend/src/features/assessment/` (repo root) | **The maintained client**: the 8 exercises, the tracker and the task source, running inside the team UI (SynapseTwin): in the first-visit baseline (`/baseline`) and from the Train page (`/task/:dimId`). See §4.5 |
-| `client/` | **Frozen reference**: the original standalone React + TypeScript app (Vite). Only it has the voice opt-in |
+| `frontend/src/features/assessment/` (repo root) | **The maintained client**: the 8 exercises, the tracker and the task source, running inside the team UI (Loti): in the first-visit baseline (`/baseline`) and from the Train page (`/task/:dimId`). See §4.5 |
 | `README.md` | Contracts + run commands |
-| `HANDOVER.md` | Notes for teammates' agents |
+| `../docs/archive/MEMBER1_HANDOVER.md` | Notes for teammates' agents (archived) |
 
 ---
 

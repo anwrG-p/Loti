@@ -1,7 +1,7 @@
 # Glossary: consumer words and copy rules
 
 > **Enforced by:** `frontend/src/utils/copyLinter.ts` and `frontend/scripts/lint-copy.mjs` (`npm run lint:copy`).
-> **Product:** SynapseTwin, a calm cognitive-training app. For training and self-reflection. Not a medical tool.
+> **Product:** Loti, a calm cognitive-training app. For training and self-reflection. Not a medical tool.
 
 ---
 

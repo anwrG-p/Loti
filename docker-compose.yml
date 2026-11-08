@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
-    container_name: synapsetwin_backend
+    container_name: loti_backend
     restart: unless-stopped
     ports:
       - "8000:8000"

@@ -70,7 +70,7 @@
   - **So:** within-device comparisons and within-task differences are safe. Comparing absolute RTs across devices is not.
 - **Low effort.** Screening on task performance alone (chance-level accuracy) flagged only about 7% of participants and missed careless responders. Combining several signals works better. [Zorowitz et al. 2023, *Nat Hum Behav*](https://pmc.ncbi.nlm.nih.gov/articles/PMC11170515) (H)
 
-### For SynapseTwin
+### For Loti
 - **The RCI is fixed for every pillar.** `rci()` in `frontend/src/features/insights/projection.ts` uses rxx = .8 and sd = 10 for all of them.
   - With those values the gate is 12.4 points.
   - At rxx = .6 it would be 17.5 points.
@@ -121,7 +121,7 @@
 - **FDA (Jan 2026):** the general wellness policy keeps its two-factor test: wellness-only intent and low risk. Any diagnostic or clinical claim exits the policy. [FDA guidance](https://www.fda.gov/media/90652/download) (M, via law-firm summaries)
 - **Norms:** we have no representative norm sample, so any "better than X% of people" figure would be invented (J). It would also break anti-slop rule 12.
 
-### For SynapseTwin
+### For Loti
 - Rule 13 hides all uncertainty by default. That conflicts with the best evidence, which is a short numeric range.
 - `pillarScores()` already computes `uncertainty`.
 
@@ -158,7 +158,7 @@
   - Source: [Coe et al. 2026](https://doi.org/10.1002/trc2.70197) (M, read via news and a PDF summary)
   - This is a signal, not a consumer claim. LearningRx shows how such claims draw enforcement.
 
-### For SynapseTwin
+### For Loti
 - **The projection measures practice.** It is an asymptotic fit to scores on the same exercises, so it measures practice on those exercises, not cognition.
 - **Session targets exceed the evidence.**
   - `SESSIONS_PER_WEEK = 4` (`projection.ts`) and `WEEKLY_TARGET = 4` (`loti/scriptedBrain.ts`) both exceed Lampit's effective range.
@@ -246,7 +246,7 @@
   - The CJEU reads "health data" broadly (C-21/23, Lindenapotheke, 2024) ⚠.
   - Processing that stays entirely on the device, with nothing leaving it, falls outside ePrivacy Art 5(3). [EDPB Guidelines 2/2023](https://www.edpb.europa.eu/documents/guideline/guidelines-22023-on-technical-scope-of-art-53-of-eprivacy-directive_en) (M, via summary)
 
-### For SynapseTwin
+### For Loti
 - **Momo is likely emotion recognition, not banned:**
   - `useEmilyStore` / `utils/emilyEngine.ts` infer *frustrated* and *hesitant* (emotions) from pointer kinematics (behavioural data).
   - So Momo is likely an emotion recognition *function*.
@@ -289,7 +289,7 @@
   - **Animation from interactions (SC 2.3.3):** motion triggered by interaction can be disabled. [W3C](https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html) ⚠ (H)
 - **Stroop and colour vision.** In 821 adults aged ≥ 53, red/green colour weakness slowed **colour naming** but not the word or interference cards. The authors advise considering visual status when reading Stroop scores. [Maastricht study](https://cris.maastrichtuniversity.nl/en/publications/visual-determinants-of-reduced-performance-on-the-stroop-color-wo/) (M)
 
-### For SynapseTwin
+### For Loti
 - **Stroop inks:** `Stroop.tsx` uses red, green, blue and yellow, and red/green is the CVD-confusable pair. Button labels already name the colour, which satisfies 1.4.1 for the *controls* but not for the stimulus.
 - **Already done:** reduced motion (`styles/*.css`) and keyboard keys 1–n.
 
@@ -322,7 +322,7 @@
 - **FTC 6(b) study (Sep 2025):** the FTC ordered 7 companion-bot firms to report how they test for harms and protect minors. [DLA Piper](https://www.dlapiper.com/en/insights/publications/2025/09/ftc-ai-chatbots) (M)
 - **NIST AI 600-1** lists **confabulation** among 12 generative-AI risks, with Measure and Manage actions. [NIST](https://doi.org/10.6028/NIST.AI.600-1) (H)
 
-### For SynapseTwin
+### For Loti
 - **The guardrails euphemise instead of escalating.** `ai_coach/safety_guardrails.py` silently *rewrites* clinical words:
   - "dementia" → "cognitive endurance challenge"
   - "disability" → "distinct cognitive modality"

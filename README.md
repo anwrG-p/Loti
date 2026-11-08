@@ -1,4 +1,4 @@
-# SynapseTwin
+# Loti
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](frontend/)
 [![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](frontend/)
@@ -9,19 +9,19 @@
 [![Privacy](https://img.shields.io/badge/Privacy-GDPR_%26_EU_AI_Act_Ready-informational)](docs/adr/0002-no-server-side-emotion-inference.md)
 [![Tests Passing](https://img.shields.io/badge/Tests-3%2C100%2B_Passing-brightgreen)](#testing--quality-assurance)
 
-SynapseTwin is a calm, privacy-first cognitive-training web platform developed for the **CISTAC 1.0 (AI4Brain)** challenge that helps users train, track, and reflect on their mental fitness without medical claims or clinical jargon. Built on validated neuropsychological paradigms (such as oMST, UFOV, Stroop, Flanker, Stop Signal, and CANTAB PAL), the platform offers 11 gamified exercises that map into five core skills—Focus & Strategy, Mental Agility, Impulse Control, Deep Memory, and Visual Radar—driven by an adaptive procedural task generator that dynamically calibrates difficulty using an 85% success-rate rule. 
+Loti is a calm, privacy-first cognitive-training web platform developed for the **CISTAC 1.0 (AI4Brain)** challenge that helps users train, track, and reflect on their mental fitness without medical claims or clinical jargon. Built on validated neuropsychological paradigms (such as oMST, UFOV, Stroop, Flanker, Stop Signal, and CANTAB PAL), the platform offers 11 gamified exercises that map into five core skills—Focus & Strategy, Mental Agility, Impulse Control, Deep Memory, and Visual Radar—driven by an adaptive procedural task generator that dynamically calibrates difficulty using an 85% success-rate rule. 
 
-Users are guided through their training by **Loti**, an explainable, non-clinical AI axolotl coach equipped with multi-layered safety guardrails and transparent adaptation reasoning, alongside **Momo**, a dolphin companion who celebrates milestones and supports opt-in mood reflection. Under the hood, an in-process state bus connects performance telemetry to 9 non-clinical practice style archetypes (GMM) with hysteresis gating and a Joint-Embedding Predictive Architecture (SAT-JEPA) digital brain twin for longitudinal session forecasting, all while upholding strict privacy principles through anonymous device identifiers, client-side scoring, full data export/deletion controls, and automated 30-day data retention.
+Users are guided through their training by **Loti**, an explainable, non-clinical AI axolotl coach equipped with multi-layered safety guardrails and transparent adaptation reasoning, alongside **Momo**, a dolphin companion who celebrates milestones and supports opt-in mood reflection. Under the hood, an in-process state bus connects performance telemetry to dynamic non-clinical practice style archetypes (GMM) with hysteresis gating and a Joint-Embedding Predictive Architecture (SAT-JEPA) digital brain twin for longitudinal session forecasting, all while upholding strict privacy principles through anonymous device identifiers, client-side scoring, full data export/deletion controls, and automated 30-day data retention.
 
-In accordance with spec U5, **SynapseTwin is strictly for personal training and self-reflection, not a medical or diagnostic tool** ("we don't measure your brain"; no clinical claims or brain-region names are surfaced to users).
+In accordance with spec U5, **Loti is strictly for personal training and self-reflection, not a medical or diagnostic tool** ("we don't measure your brain"; no clinical claims or brain-region names are surfaced to users).
 
-> **Competition Report:** For complete IEEE challenge alignment, psychometric derivations, and jury defense details, see [docs/CISTAC_AI4Brain_SynapseTwin_Comprehensive_Report.md](docs/CISTAC_AI4Brain_SynapseTwin_Comprehensive_Report.md).
+> **Competition Report:** For complete IEEE challenge alignment, psychometric derivations, and jury defense details, see [docs/CISTAC_AI4Brain_Loti_Comprehensive_Report.md](docs/CISTAC_AI4Brain_Loti_Comprehensive_Report.md).
 
 ---
 
 ## CISTAC 1.0 Challenge Alignment & Bonus Catalog
 
-Under challenge rules (*"Anything not explicitly mentioned in the PDF flyer is considered a bonus"*), SynapseTwin provides 100% of the flyer baseline plus **12 advanced innovation bonuses**:
+Under challenge rules (*"Anything not explicitly mentioned in the PDF flyer is considered a bonus"*), Loti provides 100% of the flyer baseline plus **12 advanced innovation bonuses**:
 
 ### 1. Mandated Flyer Baseline (100% Delivered)
 - **Continuous Assessment (Layer A):** 11 exercises, tracking normalized score, reaction time, error rate, and hesitation behavior.
@@ -225,11 +225,11 @@ For jury evaluation of the **Phase B Generalisation (25%)** criterion, the front
 
 Start at [docs/README.md](docs/README.md) for architectural blueprints and project specifications:
 
-- [docs/CISTAC_AI4Brain_SynapseTwin_Comprehensive_Report.md](docs/CISTAC_AI4Brain_SynapseTwin_Comprehensive_Report.md): Complete IEEE competition report, psychometric derivations, and jury defense strategy.
+- [docs/CISTAC_AI4Brain_Loti_Comprehensive_Report.md](docs/CISTAC_AI4Brain_Loti_Comprehensive_Report.md): Complete IEEE competition report, psychometric derivations, and jury defense strategy.
 - [docs/GLOSSARY.md](docs/GLOSSARY.md): Canonical consumer vocabulary, persona guidelines, and banned clinical terms.
 - [docs/adr/](docs/adr/): Architecture Decision Records (e.g. ADR 0001: two-tier telemetry, ADR 0002: no server emotion inference).
 - [docs/architecture/TASKS_AND_DIMENSIONS.md](docs/architecture/TASKS_AND_DIMENSIONS.md): Detailed mathematical derivation of cognitive pillars from trial events.
 - [docs/architecture/SEQUENCE_DIAGRAMS.md](docs/architecture/SEQUENCE_DIAGRAMS.md): Cross-subsystem communication flows and state bus integration.
-- [docs/architecture/MEMBER2_HANDOVER.md](docs/architecture/MEMBER2_HANDOVER.md): AI Coach safety architecture, prompt templates, and evaluation.
+- [docs/archive/MEMBER2_HANDOVER.md](docs/archive/MEMBER2_HANDOVER.md): (Archived) AI Coach safety architecture, prompt templates, and evaluation.
 - [docs/ui/contracts.md](docs/ui/contracts.md): Complete client-server JSON contract schemas.
-- [docs/architecture/TEAM_PLAN.md](docs/architecture/TEAM_PLAN.md): Historical five-member challenge architecture.
+- [docs/archive/TEAM_PLAN.md](docs/archive/TEAM_PLAN.md): Historical five-member challenge architecture.

@@ -1,4 +1,4 @@
-# Evidence review: making SynapseTwin less bulky
+# Evidence review: making Loti less bulky
 
 *2026-10-30. Deep-research run with 107 agents. Each claim was checked by 3 adversarial verifiers and dropped if 2 of the 3 refuted it.*
 
@@ -19,13 +19,13 @@
   - Colourfulness matters much less than complexity.
   - Users over 45 prefer low complexity even more.
 - **Sources:** Reinecke et al., CHI 2013 (450 sites, 548 raters; [pdf](https://kgajos.seas.harvard.edu/papers/reinecke13aesthetics.pdf)); Tuch et al. 2012 ([Google Research summary](https://research.google/blog/users-love-simple-and-familiar-designs-why-websites-need-to-make-a-great-first-impression/)).
-- **For SynapseTwin:** the playful Doodle **palette can stay**. What has to go is **density and layering**: cards inside cards, stacked shadows and borders, and many competing blocks per screen.
+- **For Loti:** the playful Doodle **palette can stay**. What has to go is **density and layering**: cards inside cards, stacked shadows and borders, and many competing blocks per screen.
 - **Caveat:** these studies measure first-impression appeal, not long-term usability. Very sparse designs lose a little appeal.
 
 ### 1.2 Remove what the task doesn't need, but keep what users need (medium confidence)
 
 - **The principle:** every extra element competes with the relevant ones and makes them less visible. The aim is *sufficient information, and only sufficient information*. Minimalism is not a goal in itself, because it often removes needed labels and state. ([NN/g heuristic #8](https://www.nngroup.com/articles/aesthetic-minimalist-design/))
-- **For SynapseTwin:** cut redundant cards, borders, shadows and secondary text. Keep labels, state, and the explanations users need for trust.
+- **For Loti:** cut redundant cards, borders, shadows and secondary text. Keep labels, state, and the explanations users need for trust.
 
 ### 1.3 Cut and front-load text (high and medium confidence)
 
@@ -49,14 +49,14 @@
 
 - **What eye-tracking shows:** purely decorative images are largely ignored ("jazzed-up = ignored"). Images that carry task-relevant content do get looked at. ([NN/g](https://www.nngroup.com/articles/photos-as-web-content/))
 - **The counterpoint:** decorative pictures can lift mood without hurting learning (Magner et al.).
-- **For SynapseTwin:**
+- **For Loti:**
   - Keep BRIAN, Nodi and EMILY where they **signal something**: feedback, state, progress, or an empty state.
   - Remove or shrink them where they are ornament next to primary content.
 
 ### 1.5 Drop upfront tutorial carousels (medium confidence)
 
 - **The study:** 70 users, 4 apps. Task success was 91% for people who read the tutorial and 94% for people who skipped it, not a significant difference. Readers also rated the tasks as **harder** (p = .047). ([NN/g](https://www.nngroup.com/articles/mobile-tutorials/))
-- **For SynapseTwin:** cut intro decks and explanatory onboarding steps. Get users to their first exercise quickly, and give help in context instead.
+- **For Loti:** cut intro decks and explanatory onboarding steps. Get users to their first exercise quickly, and give help in context instead.
 
 ### 1.6 Short consent is fine only if it stays fair (medium confidence)
 
@@ -65,7 +65,7 @@
   - Moving Reject off the first screen raises consent by **22–23 percentage points**, a dark pattern that most EU regulators treat as an infringement.
   - Granular controls on the first screen lower consent by 8–20 points.
   - Sources: Nouwens et al., CHI 2020 ([arXiv](https://arxiv.org/abs/2001.02479v1)); EDPB Cookie Banner Taskforce report, 2023.
-- **For SynapseTwin:** one consent screen with Accept / Reject / Customise.
+- **For Loti:** one consent screen with Accept / Reject / Customise.
 
 ---
 

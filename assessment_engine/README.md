@@ -5,19 +5,15 @@ six cognitive dimensions send one event per trial to a small FastAPI endpoint, w
 `{TELEMETRY_DIR}/{user_id}.jsonl`. Nothing biometric is collected by the UI (the frozen `client/`
 has an opt-in voice probe; see Privacy below).
 
-The exercises run inside the team UI (`frontend/`, SynapseTwin) at `/task/:dimId`. Their maintained
+The exercises run inside the team UI (`frontend/`, Loti) at `/task/:dimId`. Their maintained
 code lives in **`frontend/src/features/assessment/`**, a folder Member 1 owns inside the UI app.
-`client/` is a **frozen reference** (see [`client/README.md`](client/README.md)).
 
 ```
 backend/app/api/routes/v1_telemetry.py   POST /v1/telemetry/event -> JSONL sink, in the one API server (repo root; source of truth)
 frontend/src/features/assessment/     maintained: 8 task screens, tracker, staircase / QUEST+, task source, ExerciseHost   (repo root)
-client/                               frozen reference: the original standalone app, including the voice opt-in
 ```
 
-**Voice is not shipped in the UI** (decision D1 in `.scratch/member1-ui-integration/spec.md`). The UI
-always sends `voice_opt_in: false` and no voice fields. The voice toggle and probe exist only in the
-frozen `client/`.
+**Voice is not shipped in the UI**. The UI always sends `voice_opt_in: false` and no voice fields.
 
 ## Run
 

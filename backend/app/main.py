@@ -1,4 +1,4 @@
-"""SynapseTwin API: the one FastAPI app (BE-00).
+"""Loti API: the one FastAPI app (BE-00).
 
 Run from the repo root: uvicorn app.main:app --app-dir backend --reload
 """
@@ -41,7 +41,7 @@ def cors_origins() -> list[str]:
 
 
 app = FastAPI(
-    title="SynapseTwin API",
+    title="Loti API",
     description="Telemetry ingest and privacy, tasks, the coach, and the profile (each from its module).",
     version="1.4.0",
     # Modules register startup/shutdown hooks in app/lifecycle.py (the task worker process).

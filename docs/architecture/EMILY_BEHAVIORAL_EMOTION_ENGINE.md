@@ -10,7 +10,7 @@
 An earlier version of this doc said EMILY was "100% compliant with EU AI Act Article 5(1)(f)" and "non-biometric". **That was wrong.** The accurate position ([research §5](../research/2026-10-31-improvement-opportunities.md#5-emotion-inference-ai-act-and-gdpr)):
 
 - **It is probably emotion recognition.** The AI Act counts *behavioural* characteristics as biometric data (Art 3(34), Recital 14). Pointer and key timing are behavioural, and "frustrated" or "hesitant" are emotions (Art 3(39)). "Tired" is a physical state and is excluded (Recital 18).
-- **It is not banned.** Art 5(1)(f) covers only workplaces and education, and SynapseTwin is a consumer app.
+- **It is not banned.** Art 5(1)(f) covers only workplaces and education, and Loti is a consumer app.
 - **It is not an "AI system" while its rules stay hand-written** (Recital 12). A trained affect model would be high-risk under Annex III 1(c). So EMILY stays rule-based, runs on the device, and the server never infers emotion (ADR 0002).
 - **It owes a notice at first exposure** (Art 50(3), from 2 Aug 2026): Momo's mood is a guess from how you tap, and you can change it.
 
