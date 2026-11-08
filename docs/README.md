@@ -5,6 +5,7 @@ What the product is and how to run it: the [root README](../README.md).
 ## Current
 | Doc | What it holds |
 |---|---|
+| [Loti_System_Whitepaper.md](Loti_System_Whitepaper.md) | **System Architecture & Research Whitepaper**: full scientific specifications, JEPA modeling, and benchmarks. |
 | [GLOSSARY.md](GLOSSARY.md) | Consumer words (Loti, Momo, the 5 skills, exercise names), retired words, banned clinical terms. |
 | [adr/](adr/) | Decisions. [0001](adr/0001-two-tier-consumer-vs-technical-telemetry.md): plain words in the UI, formulas only on "How we calculate this". [0002](adr/0002-no-server-side-emotion-inference.md): no server-side emotion inference. |
 | [design/DESIGN.md](design/DESIGN.md) | The brand v2 design system in short. Full route and design guide: `docs/design/BRAND-V2.md`. |
@@ -17,6 +18,7 @@ What the product is and how to run it: the [root README](../README.md).
 | [agents/](agents/) | Conventions for coding agents (issue tracker, triage labels, domain docs). |
 
 ## History & Archive (kept as a record, not maintained)
+- [archive/CISTAC_AI4Brain_Loti_Comprehensive_Report.md](archive/CISTAC_AI4Brain_Loti_Comprehensive_Report.md): original IEEE CISTAC 1.0 (AI4Brain) competition report.
 - [archive/TEAM_PLAN.md](archive/TEAM_PLAN.md): the original five-member challenge plan.
 - [archive/MEMBER1_HANDOVER.md](archive/MEMBER1_HANDOVER.md): original telemetry & assessment handover.
 - [archive/MEMBER2_HANDOVER.md](archive/MEMBER2_HANDOVER.md): original AI coach & safety guardrail handover.

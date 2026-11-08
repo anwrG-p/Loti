@@ -15,7 +15,7 @@ Users are guided through their training by **Loti**, an explainable, non-clinica
 
 In accordance with spec U5, **Loti is strictly for personal training and self-reflection, not a medical or diagnostic tool** ("we don't measure your brain"; no clinical claims or brain-region names are surfaced to users).
 
-> **Competition Report:** For complete IEEE challenge alignment, psychometric derivations, and jury defense details, see [docs/CISTAC_AI4Brain_Loti_Comprehensive_Report.md](docs/CISTAC_AI4Brain_Loti_Comprehensive_Report.md).
+> **System Whitepaper:** For the full scientific architecture, psychometric derivations, SAT-JEPA digital twin formulation, and benchmark latencies, see [docs/Loti_System_Whitepaper.md](docs/Loti_System_Whitepaper.md).
 
 ---
 
@@ -225,7 +225,8 @@ For jury evaluation of the **Phase B Generalisation (25%)** criterion, the front
 
 Start at [docs/README.md](docs/README.md) for architectural blueprints and project specifications:
 
-- [docs/CISTAC_AI4Brain_Loti_Comprehensive_Report.md](docs/CISTAC_AI4Brain_Loti_Comprehensive_Report.md): Complete IEEE competition report, psychometric derivations, and jury defense strategy.
+- [docs/Loti_System_Whitepaper.md](docs/Loti_System_Whitepaper.md): System architecture, psychometric modeling, SAT-JEPA formulations, and empirical benchmarks.
+- [docs/archive/CISTAC_AI4Brain_Loti_Comprehensive_Report.md](docs/archive/CISTAC_AI4Brain_Loti_Comprehensive_Report.md): (Archived) Original IEEE challenge alignment report and competition jury defense strategy.
 - [docs/GLOSSARY.md](docs/GLOSSARY.md): Canonical consumer vocabulary, persona guidelines, and banned clinical terms.
 - [docs/adr/](docs/adr/): Architecture Decision Records (e.g. ADR 0001: two-tier telemetry, ADR 0002: no server emotion inference).
 - [docs/architecture/TASKS_AND_DIMENSIONS.md](docs/architecture/TASKS_AND_DIMENSIONS.md): Detailed mathematical derivation of cognitive pillars from trial events.
