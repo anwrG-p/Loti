@@ -2,9 +2,9 @@ name: UI & Python Verification
 
 on:
   push:
-    branches: [main, ui/main, 'ui/**', 'feat/**']
+    branches: [main, ui/main, 'ui/**', 'feat/**', 'fix/**', 'chore/**', 'cleanup/**', 'refactor/**']
   pull_request:
-    branches: [main, ui/main, 'feat/**']
+    branches: [main, ui/main, 'feat/**', 'fix/**']
 
 jobs:
   verify:
@@ -78,3 +78,5 @@ jobs:
 
       - name: Pytest (root pytest.ini collects every suite, backend/tests included)
         run: python -m pytest -q
+        env:
+          OMP_NUM_THREADS: '1'

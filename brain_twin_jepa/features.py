@@ -438,7 +438,6 @@ def task_scores(events: Sequence[Event]) -> dict[str, dict[str, Any]]:
     session_mashed = masher_res.is_anomaly or any(
         e.get("anomaly_flag") == "button_masher"
         or e.get("uncertainty_weight", 1.0) < 0.5
-        or detect_button_masher(e).is_anomaly
         for e in events
     )
 

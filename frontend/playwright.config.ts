@@ -18,7 +18,7 @@ export default defineConfig({
   // which a normal build ignores.
   webServer: {
     command: `npx vite build --outDir dist-e2e && npx vite preview --outDir dist-e2e --port ${PORT} --strictPort --host 127.0.0.1`,
-    env: { VITE_E2E: '1' },
+    env: { VITE_E2E: '1', VITE_USE_MOCKS: 'true', VITE_LOTI_COACH: 'off' },
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120000, // includes the build

@@ -195,7 +195,7 @@ export default function CoachPage({ brain = coachBrain }: { brain?: CoachBrain }
             type="button"
             onClick={() => setShowCollab((v) => !v)}
             aria-expanded={showCollab}
-            aria-label="AI Collaboration Score"
+            title="AI Collaboration Score"
             className="focus-ring flex items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-1 text-xs font-semibold text-ink hover:bg-surface-raised cursor-pointer transition-colors"
           >
             <span className="inline-block size-2 rounded-full bg-brand" aria-hidden="true" />

@@ -28,4 +28,4 @@ Edit only the files you own. Anything else is read-only. If you need a change ou
 - **Setup.** In the worktree, run `cd frontend && npm ci` first.
 - **Checks.** `npm run qa:checks` must be green in your worktree. Run Edge Playwright with a scratch config (`channel: 'msedge'`, not committed) for your own spec, with axe in light and dark at 375/768/1440 and no overflow.
 - **Commits.** Commit on your worktree branch. No AI attribution: no Co-Authored-By lines (user rule).
-- **Report.** Write it to `C:\Users\mazen\OneDrive\Documents\Aura\ai4brain\.superpowers\sdd\brand-v2\ticket-<id>-report.md`, using the main-tree absolute path. Include your branch name, commits, tests, screenshot paths, anything removed (before → after) and Requests.
+- **Report.** Write it to `<repo-root>/.superpowers/sdd/brand-v2/ticket-<id>-report.md`. Include your branch name, commits, tests, screenshot paths, anything removed (before → after) and Requests.

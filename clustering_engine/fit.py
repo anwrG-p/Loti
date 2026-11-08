@@ -29,7 +29,7 @@ def synthetic_pillars(users: int, sessions: int, data_seed: int):
     return session_pillars(events)
 
 
-def fit_synthetic(users: int, sessions: int, data_seed: int, k: int = DEFAULT_K, seed: int = DEFAULT_SEED) -> ClusterModel:
+def fit_synthetic(users: int, sessions: int, data_seed: int, k: int | str = "auto", seed: int = DEFAULT_SEED) -> ClusterModel:
     _, X = synthetic_pillars(users, sessions, data_seed)
     return fit_gmm(X, k=k, seed=seed, features=list(PILLARS))
 
@@ -39,13 +39,21 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--users", type=int, default=200)
     ap.add_argument("--sessions", type=int, default=6)
     ap.add_argument("--data-seed", type=int, default=0)
-    ap.add_argument("--k", type=int, default=DEFAULT_K)
+    ap.add_argument("--k", default="auto", help="Number of clusters or 'auto' for dynamic BIC selection")
     ap.add_argument("--seed", type=int, default=DEFAULT_SEED)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     a = ap.parse_args(argv)
     if a.users < 1 or a.sessions < 1:
         ap.error("--users and --sessions must be at least 1")
-    model = fit_synthetic(a.users, a.sessions, a.data_seed, a.k, a.seed)
+    k_val: int | str = a.k
+    if isinstance(k_val, str) and k_val != "auto":
+        try:
+            k_val = int(k_val)
+        except ValueError:
+            ap.error("--k must be an integer >= 1 or 'auto'")
+    if isinstance(k_val, int) and k_val < 1:
+        ap.error("--k must be at least 1")
+    model = fit_synthetic(a.users, a.sessions, a.data_seed, k_val, a.seed)
     path = model.save(a.out)
     print(f"k={model.k} (asked {a.k}) on {a.users} users x {a.sessions} sessions -> {path}")
     for i in range(model.k):

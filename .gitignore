@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -7,6 +7,11 @@ __pycache__/
 env/
 venv/
 .venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
 build/
 develop-eggs/
 dist/
@@ -43,6 +48,7 @@ yarn-error.log*
 dist/
 out/
 .next/
+*.tsbuildinfo
 
 # Environments & IDEs
 .env
@@ -55,3 +61,4 @@ out/
 .gstack/
 # Fitted clusters (python -m clustering_engine.fit)
 models/clustering/
+docs/ui/screenshots/

@@ -56,7 +56,7 @@ def synthetic_pillar_rows(users: int, sessions: int, data_seed: int) -> np.ndarr
 def fit_cluster_model(users: int = CLUSTER_USERS, sessions: int = CLUSTER_SESSIONS, data_seed: int = CLUSTER_DATA_SEED):
     from clustering_engine.clustering_gmm import fit_gmm
 
-    return fit_gmm(synthetic_pillar_rows(users, sessions, data_seed), features=list(profile.PILLARS))
+    return fit_gmm(synthetic_pillar_rows(users, sessions, data_seed), k="auto", features=list(profile.PILLARS))
 
 
 def save_cluster_model(model, path: Path) -> Path:

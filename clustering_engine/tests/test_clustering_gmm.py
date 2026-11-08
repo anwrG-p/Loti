@@ -11,12 +11,16 @@ import sklearn
 from ai_coach.safety_guardrails import lint_text
 from clustering_engine.clustering_gmm import (
     ARCHETYPE_NAMES,
+    DEFAULT_MIN_MASS_RATIO,
     FALLBACK_NAME,
     PILLARS,
     ClusterModel,
     _archetype_name,
+    assign_procedural_names,
+    find_optimal_k,
     fit_gmm,
     posteriors,
+    procedural_archetype_name,
 )
 from clustering_engine.fit import fit_synthetic, main, synthetic_pillars
 from clustering_engine.pillar_adapter import session_pillars
@@ -364,3 +368,92 @@ def test_fit_script_writes_a_loadable_model(tmp_path, capsys):
     m = ClusterModel.load(out)
     assert m.k == 4 and m.features == list(PILLARS)
     assert "k=4" in capsys.readouterr().out
+
+
+# --- dynamic k selection and procedural archetype naming ------------------------------------------
+
+
+def test_find_optimal_k_discovers_known_clusters():
+    # 4 distinct synthetic clusters in 5D
+    rng = np.random.default_rng(42)
+    centers = [[20, 20, 20, 20, 20], [80, 20, 20, 20, 20], [20, 80, 80, 20, 20], [80, 80, 80, 80, 80]]
+    X = np.vstack([c + rng.normal(0, 1.5, size=(50, 5)) for c in centers])
+    center = X.mean(axis=0)
+    scale = X.std(axis=0)
+    scale[scale == 0] = 1.0
+    Z = (X - center) / scale
+
+    best_k = find_optimal_k(Z, min_k=2, max_k=8, min_mass_ratio=0.05)
+    assert best_k == 4
+
+
+def test_find_optimal_k_enforces_mass_gate():
+    # 1 big cluster and 1 tiny cluster with 2% mass
+    rng = np.random.default_rng(0)
+    big = rng.normal(50, 5, size=(490, 5))
+    tiny = rng.normal(90, 1, size=(10, 5))  # 10 / 500 = 2% < 5%
+    X = np.vstack([big, tiny])
+    center = X.mean(axis=0)
+    scale = X.std(axis=0)
+    scale[scale == 0] = 1.0
+    Z = (X - center) / scale
+
+    best_k = find_optimal_k(Z, min_k=2, max_k=5, min_mass_ratio=0.05)
+    assert best_k == 2
+
+
+def test_procedural_archetype_name_rules():
+    center = np.array([50.0] * 5)
+    scale = np.array([10.0] * 5)
+    features = list(PILLARS)
+
+    # Dominant focus: [75, 50, 50, 50, 50] -> z = [2.5, 0, 0, 0, 0]
+    name_focus = procedural_archetype_name(np.array([75.0, 50, 50, 50, 50]), center, scale, features)
+    assert name_focus == "Focus Strategist"
+    assert lint_text(name_focus) == []
+
+    # Dominant agility: [50, 75, 50, 50, 50] -> z = [0, 2.5, 0, 0, 0]
+    name_agility = procedural_archetype_name(np.array([50, 75.0, 50, 50, 50]), center, scale, features)
+    assert name_agility == "Nimble Scout"
+    assert lint_text(name_agility) == []
+
+    # Synergy pair: agility + focus -> "Adaptive Planner"
+    name_pair = procedural_archetype_name(np.array([70.0, 70.0, 50, 50, 50]), center, scale, features)
+    assert name_pair == "Adaptive Planner"
+    assert lint_text(name_pair) == []
+
+    # Global high: all z >= 0.4
+    name_high = procedural_archetype_name(np.array([65.0] * 5), center, scale, features)
+    assert name_high == "All-Round Achiever"
+
+    # Global foundational: all z <= -0.4
+    name_low = procedural_archetype_name(np.array([35.0] * 5), center, scale, features)
+    assert name_low == "Foundational Explorer"
+
+    # Centered balanced: all z around 0
+    name_bal = procedural_archetype_name(np.array([50.0] * 5), center, scale, features)
+    assert name_bal == "Balanced Builder"
+
+
+def test_fit_gmm_auto_k_and_procedural_names():
+    rng = np.random.default_rng(123)
+    centers = [[30, 30, 30, 30, 30], [70, 70, 70, 70, 70], [30, 80, 30, 30, 30]]
+    X = np.vstack([c + rng.normal(0, 2, size=(60, 5)) for c in centers])
+
+    m = fit_gmm(X, k="auto")
+    assert m.k_requested == "auto"
+    assert m.k == 3
+    assert len(m.procedural_names) == 3
+    assert len(set(m.procedural_names)) == 3  # All unique
+    for name in m.procedural_names:
+        assert lint_text(name) == []
+        assert not EMOTION_WORDS.search(name)
+
+    # Persistence roundtrip preserves procedural names and k_requested='auto'
+    d = m.to_dict()
+    assert d["k_requested"] == "auto"
+    assert "custom_names" in d
+    loaded = ClusterModel.from_dict(d)
+    assert loaded.k == m.k
+    assert loaded.procedural_names == m.procedural_names
+    assert loaded.model_id == m.model_id

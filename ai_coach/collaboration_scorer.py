@@ -120,11 +120,19 @@ class CollaborationScorer:
         self.weight_profiles = weight_profiles or ARCHETYPE_WEIGHT_PROFILES
 
     @staticmethod
-    def get_tier_for_cluster(cluster_id: int) -> ArchetypeTier:
-        """Map cluster index (0..8) to its categorical progression tier."""
-        if cluster_id <= 2:
+    def get_tier_for_cluster(cluster_id: int, session_count: Optional[int] = None) -> ArchetypeTier:
+        """Map cluster index or training session count to its categorical progression tier."""
+        if session_count is not None:
+            if session_count < 5:
+                return ArchetypeTier.EXPLORER
+            elif session_count < 20:
+                return ArchetypeTier.PRACTITIONER
+            else:
+                return ArchetypeTier.STRATEGIST
+        clamped_id = max(0, min(8, cluster_id))
+        if clamped_id <= 2:
             return ArchetypeTier.EXPLORER
-        elif cluster_id <= 5:
+        elif clamped_id <= 5:
             return ArchetypeTier.PRACTITIONER
         else:
             return ArchetypeTier.STRATEGIST

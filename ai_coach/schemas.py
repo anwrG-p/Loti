@@ -46,10 +46,10 @@ PILLAR_LABELS: Dict[PillarId, str] = {
 
 
 class ArchetypeTier(str, Enum):
-    """Categorical progression tier derived from K=9 GMM cluster archetypes."""
-    EXPLORER = "explorer"          # Beginners (clusters 0, 1, 2)
-    PRACTITIONER = "practitioner"  # Intermediate (clusters 3, 4, 5)
-    STRATEGIST = "strategist"      # Advanced / Autonomous (clusters 6, 7, 8)
+    """Categorical progression tier derived from cluster archetypes or user practice maturity."""
+    EXPLORER = "explorer"          # Beginners
+    PRACTITIONER = "practitioner"  # Intermediate
+    STRATEGIST = "strategist"      # Advanced / Autonomous
 
 
 class StateBusEvent(BaseModel):
@@ -60,7 +60,7 @@ class StateBusEvent(BaseModel):
     """
     user_id: str
     transition_occurred: bool = False
-    active_cluster_id: int = Field(default=0, ge=0, le=8, description="Active cluster index k in 0..8")
+    active_cluster_id: int = Field(default=0, ge=0, description="Active cluster index k >= 0")
     delta_vector: Dict[str, float] = Field(
         default_factory=dict,
         description="Prototype differential vector Δc = W_eval * (μ_target - μ_active)"
@@ -126,7 +126,7 @@ class DimensionWeights(BaseModel):
 class CollaborationScoreResult(BaseModel):
     """Full breakdown of the Dynamic AI Collaboration Score S_collab."""
     composite_score: float = Field(ge=0.0, le=100.0, description="Overall S_collab score 0-100")
-    archetype_id: int = Field(ge=0, le=8)
+    archetype_id: int = Field(ge=0)
     archetype_tier: ArchetypeTier
     dimension_scores: Dict[str, float]
     dimension_weights: Dict[str, float]
@@ -198,7 +198,7 @@ class ChatRequest(BaseModel):
     message: str
     session_id: Optional[str] = None
     chat_history: List[ChatMessage] = Field(default_factory=list)
-    active_cluster_id: Optional[int] = Field(default=None, ge=0, le=8)
+    active_cluster_id: Optional[int] = Field(default=None, ge=0)
     delta_vector: Optional[Dict[str, float]] = None
     # From the state bus (BE-11), filled server side only, never from the client.
     uncertainty: Optional[float] = Field(default=None, ge=0.0, le=1.0)

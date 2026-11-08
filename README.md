@@ -1,5 +1,14 @@
 # SynapseTwin
 
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue?logo=typescript)](frontend/)
+[![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](frontend/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?logo=tailwindcss)](frontend/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi)](backend/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c?logo=pytorch)](brain_twin_jepa/)
+[![WCAG](https://img.shields.io/badge/WCAG-2.1_AAA-success)](docs/design/DESIGN.md)
+[![Privacy](https://img.shields.io/badge/Privacy-GDPR_%26_EU_AI_Act_Ready-informational)](docs/adr/0002-no-server-side-emotion-inference.md)
+[![Tests Passing](https://img.shields.io/badge/Tests-3%2C100%2B_Passing-brightgreen)](#testing--quality-assurance)
+
 SynapseTwin is a calm, privacy-first cognitive-training web platform developed for the **CISTAC 1.0 (AI4Brain)** challenge that helps users train, track, and reflect on their mental fitness without medical claims or clinical jargon. Built on validated neuropsychological paradigms (such as oMST, UFOV, Stroop, Flanker, Stop Signal, and CANTAB PAL), the platform offers 11 gamified exercises that map into five core skills—Focus & Strategy, Mental Agility, Impulse Control, Deep Memory, and Visual Radar—driven by an adaptive procedural task generator that dynamically calibrates difficulty using an 85% success-rate rule. 
 
 Users are guided through their training by **Loti**, an explainable, non-clinical AI axolotl coach equipped with multi-layered safety guardrails and transparent adaptation reasoning, alongside **Momo**, a dolphin companion who celebrates milestones and supports opt-in mood reflection. Under the hood, an in-process state bus connects performance telemetry to 9 non-clinical practice style archetypes (GMM) with hysteresis gating and a Joint-Embedding Predictive Architecture (SAT-JEPA) digital brain twin for longitudinal session forecasting, all while upholding strict privacy principles through anonymous device identifiers, client-side scoring, full data export/deletion controls, and automated 30-day data retention.

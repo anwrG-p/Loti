@@ -3,14 +3,25 @@
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $frontendDir = Join-Path $repoRoot "frontend"
 
-$condaEnvPython = "C:\Users\User\miniconda3\envs\ai4brain-clustering\python.exe"
-if (Test-Path $condaEnvPython) {
-    $python = $condaEnvPython
-} elseif ($env:CONDA_PREFIX -and (Test-Path (Join-Path $env:CONDA_PREFIX "python.exe"))) {
+if ($env:CONDA_PREFIX -and (Test-Path (Join-Path $env:CONDA_PREFIX "python.exe"))) {
     $python = Join-Path $env:CONDA_PREFIX "python.exe"
-} else {
+} elseif (Test-Path (Join-Path $repoRoot ".venv\Scripts\python.exe")) {
     $python = Join-Path $repoRoot ".venv\Scripts\python.exe"
-    if (-not (Test-Path $python)) { $python = "python" }
+} elseif (Test-Path (Join-Path $repoRoot ".venv\bin\python")) {
+    $python = Join-Path $repoRoot ".venv\bin\python"
+} else {
+    $resolvedConda = $null
+    if (Get-Command conda -ErrorAction SilentlyContinue) {
+        $found = (& conda info --envs | Where-Object { $_ -match "ai4brain-clustering\s+(.+)$" } | ForEach-Object { $matches[1].Trim() })
+        if ($found -and (Test-Path (Join-Path $found "python.exe"))) {
+            $resolvedConda = Join-Path $found "python.exe"
+        }
+    }
+    if ($resolvedConda) {
+        $python = $resolvedConda
+    } else {
+        $python = "python"
+    }
 }
 
 if (-not (Test-Path (Join-Path $frontendDir "node_modules"))) {
