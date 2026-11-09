@@ -9,42 +9,39 @@
 [![Privacy](https://img.shields.io/badge/Privacy-GDPR_%26_EU_AI_Act_Ready-informational)](docs/adr/0002-no-server-side-emotion-inference.md)
 [![Tests Passing](https://img.shields.io/badge/Tests-3%2C100%2B_Passing-brightgreen)](#testing--quality-assurance)
 
-Loti is a calm, privacy-first cognitive-training web platform developed for the **CISTAC 1.0 (AI4Brain)** challenge that helps users train, track, and reflect on their mental fitness without medical claims or clinical jargon. Built on validated neuropsychological paradigms (such as oMST, UFOV, Stroop, Flanker, Stop Signal, and CANTAB PAL), the platform offers 11 gamified exercises that map into five core skills—Focus & Strategy, Mental Agility, Impulse Control, Deep Memory, and Visual Radar—driven by an adaptive procedural task generator that dynamically calibrates difficulty using an 85% success-rate rule. 
+Loti is a calm, privacy-first, open-source cognitive assessment platform and digital brain twin that enables users to train, track, and reflect on their mental fitness without medical claims or clinical jargon. Built on validated neuropsychological paradigms (such as oMST, UFOV, Stroop, Flanker, Stop Signal, and CANTAB PAL), the platform delivers 11 gamified exercises that map into five core skills—Focus & Strategy, Mental Agility, Impulse Control, Deep Memory, and Visual Radar—driven by an adaptive procedural task generator that dynamically calibrates difficulty using an 85% success-rate rule.
 
-Users are guided through their training by **Loti**, an explainable, non-clinical AI axolotl coach equipped with multi-layered safety guardrails and transparent adaptation reasoning, alongside **Momo**, a dolphin companion who celebrates milestones and supports opt-in mood reflection. Under the hood, an in-process state bus connects performance telemetry to dynamic non-clinical practice style archetypes (GMM) with hysteresis gating and a Joint-Embedding Predictive Architecture (SAT-JEPA) digital brain twin for longitudinal session forecasting, all while upholding strict privacy principles through anonymous device identifiers, client-side scoring, full data export/deletion controls, and automated 30-day data retention.
+Users are guided through their training by **Loti**, an explainable, non-clinical AI axolotl coach equipped with a 4-tier defense-in-depth safety hierarchy and transparent adaptation reasoning, alongside **Momo**, a dolphin companion who celebrates milestones and supports opt-in mood reflection. Under the hood, an in-process state bus connects performance telemetry to bounded dynamic practice style archetypes (GMM) with Schmitt-trigger hysteresis and a Soft-Anchored Temporal Joint-Embedding Predictive Architecture (SAT-JEPA) digital brain twin for longitudinal session forecasting, all while upholding strict privacy principles through anonymous device identifiers, client-side scoring, full data export/deletion controls, and automated 30-day data retention.
 
 In accordance with spec U5, **Loti is strictly for personal training and self-reflection, not a medical or diagnostic tool** ("we don't measure your brain"; no clinical claims or brain-region names are surfaced to users).
 
-> **System Whitepaper:** For the full scientific architecture, psychometric derivations, SAT-JEPA digital twin formulation, and benchmark latencies, see [docs/Loti_System_Whitepaper.md](docs/Loti_System_Whitepaper.md).
+> **System Whitepaper:** For the full scientific architecture, psychometric derivations, SAT-JEPA digital twin formulation, and benchmark latencies, see [docs/Loti_System_Whitepaper.md](docs/Loti_System_Whitepaper.md). (Original IEEE challenge alignment report: [docs/archive/CISTAC_AI4Brain_Loti_Comprehensive_Report.md](docs/archive/CISTAC_AI4Brain_Loti_Comprehensive_Report.md)).
 
 ---
 
-## CISTAC 1.0 Challenge Alignment & Bonus Catalog
+## Key Architectural & Scientific Innovations
 
-Under challenge rules (*"Anything not explicitly mentioned in the PDF flyer is considered a bonus"*), Loti provides 100% of the flyer baseline plus **12 advanced innovation bonuses**:
+Loti was engineered from the ground up as a production-grade, uncertainty-aware cognitive growth platform with 12 distinct architectural contributions:
 
-### 1. Mandated Flyer Baseline (100% Delivered)
-- **Continuous Assessment (Layer A):** 11 exercises, tracking normalized score, reaction time, error rate, and hesitation behavior.
-- **Explainable AI Coach (Layer B):** Loti the Axolotl provides natural-language guidance without clinical jargon.
-- **Adaptive Learning & Dashboard (Layer C):** Dynamic task adaptation, 5-spoke uncertainty radar, progress curves, heatmaps, and weekly goal tracking.
-- **AI Collaboration Score ($0–100$):** Documented 5-dimension weighted formula measuring user collaboration with the AI coach.
-- **Privacy & Ethics:** 3-tier granular consent, automated 30-day data retention, complete data export and deletion, with a strictly non-biometric mandatory baseline.
+### 1. Core Closed-Loop Foundations
+- **Continuous Neuropsychological Assessment:** 11 gamified exercises, tracking normalized score, sub-millisecond reaction time, error rate, and hesitation dynamics.
+- **Explainable & Safe AI Coach:** Loti the Axolotl provides natural-language guidance with multi-turn context and zero clinical diagnostic jargon.
+- **Adaptive Learning & Analytics Dashboard:** Dynamic task adaptation, 5-spoke uncertainty radar, progress curves, session fatigue heatmaps, and weekly goal tracking.
+- **AI Collaboration Score ($0–100$):** Documented 5-dimension weighted formula measuring how constructively users interact with the AI guide.
+- **Privacy & Data Sovereignty:** Anonymous device IDs (Spec R13), atomic erasure under striped file locks, one-click JSONL export, and automated daily 30-day retention sweeps.
 
-### 2. Explicit Flyer Bonuses (Section 4)
-- **Voice-Based Coaching:** Optional hands-free Web Speech API integration (`voice_opt_in`).
-- **Emotion-Aware AI:** Momo the Dolphin mood reflection with client-side affect guessing and EU AI Act Art 50(3) transparent notification.
-- **Predictive Cognitive Growth:** Soft-Anchored Temporal JEPA (SAT-JEPA) longitudinal forecasting with split-conformal prediction intervals.
+### 2. Applied Machine Learning & Digital Twin
+- **SAT-JEPA Leaky Integrator Architecture:** Context MLP ($f_\theta$), EMA target encoder ($f_{\bar{\theta}}, \tau=0.996$), learned temporal integrator leak ($a$), and soft-anchor regularizer to eliminate representation collapse (`brain_twin_jepa/`).
+- **Bounded Dynamic Archetypes (GMM):** Automatic model selection ($k^* \ge 2$) minimizing Bayesian Information Criterion (BIC) subject to a 5% cluster mass gate, clustering behaviors into non-stigmatizing procedural archetypes (`clustering_engine/`).
+- **Schmitt-Trigger Hysteresis Gating:** $\Delta_{\text{hyst}} = 0.15, N_{\text{confirm}} = 3$ consecutive frames to eliminate boundary-chattering oscillation across neighboring archetypes.
+- **Calibrated Conformal Forecasting:** Soft-anchored longitudinal session predictions with split-conformal prediction intervals operating in shadow mode to prevent deceptive certainty.
 
-### 3. Extended Innovation Bonuses (Beyond the Flyer)
-- **SAT-JEPA Leaky Integrator Architecture:** Context MLP ($f_\theta$), EMA target encoder ($f_{\bar{\theta}}, \tau=0.996$), learned temporal integrator leak ($a$), and soft anchor regularizer to eliminate representation collapse (`brain_twin_jepa/`).
-- **9 Practice Style Archetypes (GMM):** Unsupervised Gaussian Mixture Model clustering training styles into non-stigmatizing profiles ("Steady planner", "Nimble switcher", "Methodical solver") (`clustering_engine/`).
-- **Schmitt-Trigger Hysteresis Gating:** $\Delta_{\text{hyst}} = 0.15, N_{\text{confirm}} = 3$ consecutive frames to eliminate boundary-chattering oscillation across clusters.
+### 3. Psychometric Rigor & Production Engineering
 - **Algorithmic Mitigation of 7 Real-World Measurement Biases:** Sub-second hardware display timestamping (`shown_ms`), chance floor corrections ($p_0$), tab-hidden auto-pause, colorblind-safe palettes, Chelune RCI practice-effect gating ($RCI \ge 1.96$), and EZ-diffusion drift modeling ($DDM\_Caution$).
-- **4-Tier Defense-in-Depth Safety Architecture:** Deterministic bilingual crisis interception, medical signposting, secondary Gemini crisis backup classifier, and automated whole-reply withholding via regex banned-terms filtering (`ai_coach/`).
-- **Generalisation Judge Tool (`?judge=1`):** Real-time dimension switching across 3, 6, 7, 8, and 10 dimensions (`FULL_DIMENSION_POOL`), directly capturing the 25% Phase B Generalisation score.
+- **4-Tier Defense-in-Depth Safety Hierarchy:** Deterministic bilingual crisis interception, medical signposting, secondary Gemini backup classifier, and automated whole-reply withholding via regex banned-terms filtering (`ai_coach/`).
 - **Procedural Algorithmic Task Generation & Solvers:** 11 procedural generators paired with mathematical solvers proving single-solution validity, sub-millisecond hot-pool dispatching, and TimedBloom deduplication (`dynamic_cache/`).
-- **Production GDPR & EU AI Act Legal Infrastructure:** Anonymous device IDs (Spec R13), atomic erasure under striped file locks, one-click JSONL export, automated daily retention sweeps, and zero server-side emotion inference (ADR 0002).
-- **Inclusive Brand v2 Design System:** 100% WCAG 2.1 AAA contrast compliance, screen-reader roving tabindex grids, and anti-burnout weekly goal pacing (3 sessions/week + 1 skip).
+- **Dimensionality Stress-Testing Tool (`?judge=1`):** Real-time dimension switching across 3, 6, 7, 8, and 10 dimensions (`FULL_DIMENSION_POOL`), demonstrating cross-framework generalisation.
+- **Inclusive Design System:** 100% WCAG 2.1 AAA contrast compliance, screen-reader roving tabindex grids, and anti-burnout weekly goal pacing (3 sessions/week + 1 skip).
 - **Extreme Reliability Suite:** 3,100+ passing automated tests and resilient offline-first mock fallback mode.
 
 ---
@@ -91,13 +88,13 @@ Weights dynamically tune to the user's active GMM practice tier (Explorer, Pract
 ## Workspace Modules
 
 ```
-CISTAC/
+loti/
 ├── frontend/             # Single-page web app (React 18, Vite, TypeScript, Tailwind v4, Zustand)
 ├── backend/              # Unified API server (FastAPI) and privacy telemetry store
 │   └── app/              # Routes (/v1), lifecycle hooks, data retention, and exercise rules
 ├── ai_coach/             # Loti: crisis filter, safety guardrails, Gemini runner, collaboration scorer
 ├── dynamic_cache/        # Task dispatcher (/v1/tasks/next), 11 procedural generators & solvers, LLM pool
-├── clustering_engine/    # 9 practice style archetypes (GMM) with hysteresis state gating
+├── clustering_engine/    # Bounded dynamic practice style archetypes (GMM) with hysteresis state gating
 ├── brain_twin_jepa/      # Brain twin: session features, profile builder, fatigue grid, JEPA forecasts
 ├── data/                 # Synthetic generator (data/synthetic) & local telemetry storage (data/raw)
 ├── docs/                 # Centralized documentation, specifications, glossary, and ADRs
@@ -213,11 +210,11 @@ python -m backend.app.privacy.retention --days 30
 
 ---
 
-## Generalisation Judge Tool (`?judge=1`)
+## Dimensionality Generalisation & Stress-Testing Tool (`?judge=1`)
 
-For jury evaluation of the **Phase B Generalisation (25%)** criterion, the frontend includes a live dimension switcher:
+To demonstrate that Loti's profiling algorithms are not bound to a single fixed cognitive taxonomy, the frontend includes a live dimension switcher:
 - Navigate to any task with `?judge=1` in the URL (e.g. `http://localhost:5173/train?judge=1`).
-- Switch dynamically between **3, 6, 7, 8, and 10 cognitive dimension models** (`FULL_DIMENSION_POOL`), demonstrating that the assessment engine and profiling architecture are completely generalizable across cognitive frameworks.
+- Switch dynamically between **3, 6, 7, 8, and 10 cognitive dimension models** (`FULL_DIMENSION_POOL`), demonstrating that the assessment engine and profiling architecture generalise seamlessly across different cognitive science frameworks.
 
 ---
 
