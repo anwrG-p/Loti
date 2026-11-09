@@ -59,7 +59,12 @@ User ids are anonymous device ids, lowercased on the server (R13). A route that 
   "why_this": [
     {"kind": "harder", "reason": "Memory Gauntlet got a little harder because your recent rounds went well.", "at": "2026-11-01T10:54:02+00:00"},
     {"kind": "style", "reason": "Your practice style reads as Methodical solver.", "at": "2026-11-01T10:50:00+00:00"}
-  ]
+  ],
+  "asymmetrical_plan": {
+    "advanced": ["visual"],
+    "foundational": ["memory"],
+    "balanced": ["focus", "agility", "impulse"]
+  }
 }
 ```
 
@@ -87,6 +92,8 @@ R12 still applies: the UI shows ranges only in "View as table".
 **`why_this`.** The last 5 adaptation decisions, newest first, as plain reasons with no numbers:
 - `harder` / `easier`: a staircase moved the difficulty of one exercise.
 - `style`: the practice style was set or changed.
+
+**`asymmetrical_plan`.** Present when cross-skill variance is detected (e.g., strong logic alongside emerging attention). Partitions the 5 skills into `advanced`, `foundational`, and `balanced` tiers to direct targeted exercise assignments rather than a flattened average difficulty.
 
 **No brain-region names, ever** (U5). The keys are skill ids.
 

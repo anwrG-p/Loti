@@ -126,6 +126,11 @@ SNAPSHOT = {
         "error_rate": "number",
         "session_count": "number",
     }],
+    "asymmetrical_plan": {
+        "advanced": ["str"],
+        "foundational": ["str"],
+        "balanced": ["str"],
+    },
 }
 
 
