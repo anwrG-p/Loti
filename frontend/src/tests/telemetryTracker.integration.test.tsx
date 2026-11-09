@@ -8,9 +8,6 @@ import { SESSIONS_KEY, useSessionStore } from '../features/insights/sessionStore
 import PrivacyPage from '../pages/PrivacyPage'
 import { useAppStore } from '../state/useAppStore'
 
-// Same flags as App.tsx, so the router prints no v7 warnings.
-const future = { v7_startTransition: true, v7_relativeSplatPath: true }
-
 // The tracker singleton is only spied on, never filled, so no state leaks between tests.
 // Unmount before resetting the store, or the reset re-renders a mounted AppShell outside act().
 afterEach(() => {
@@ -37,7 +34,7 @@ describe('UI telemetry goes through the Tracker', () => {
       coachConsent: 'pending',
     })
     render(
-      <MemoryRouter future={future} initialEntries={['/dashboard']}>
+      <MemoryRouter initialEntries={['/dashboard']}>
         <AppShell>
           <p>page</p>
         </AppShell>
@@ -48,7 +45,7 @@ describe('UI telemetry goes through the Tracker', () => {
 
   const renderShell = () =>
     render(
-      <MemoryRouter future={future} initialEntries={['/dashboard']}>
+      <MemoryRouter initialEntries={['/dashboard']}>
         <AppShell>
           <p>page</p>
         </AppShell>
@@ -87,7 +84,7 @@ describe('UI telemetry goes through the Tracker', () => {
 
   const renderPrivacy = () =>
     render(
-      <MemoryRouter future={future}>
+      <MemoryRouter>
         <PrivacyPage />
       </MemoryRouter>,
     )
@@ -151,7 +148,7 @@ describe('UI telemetry goes through the Tracker', () => {
   it('confirming the privacy purge clears the tracker queue and says so', () => {
     const clear = vi.spyOn(tracker, 'clear').mockReturnValue(3)
     render(
-      <MemoryRouter future={future}>
+      <MemoryRouter>
         <PrivacyPage />
       </MemoryRouter>,
     )
@@ -164,7 +161,7 @@ describe('UI telemetry goes through the Tracker', () => {
     vi.spyOn(tracker, 'clear').mockReturnValue(0)
     localStorage.setItem('aura_uid', 'old-anonymous-id')
     render(
-      <MemoryRouter future={future}>
+      <MemoryRouter>
         <PrivacyPage />
       </MemoryRouter>,
     )
@@ -177,7 +174,7 @@ describe('UI telemetry goes through the Tracker', () => {
     useSessionStore.getState().addSession({ id: 's1', at: '2026-10-31T10:00:00Z', inputs: { MST_LDI: { score: 60, trials: 20 } } })
     useGoalsStore.getState().setGoal('memory', 10)
     render(
-      <MemoryRouter future={future}>
+      <MemoryRouter>
         <PrivacyPage />
       </MemoryRouter>,
     )

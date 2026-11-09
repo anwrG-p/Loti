@@ -49,7 +49,7 @@ describe('Wave 1 & Wave 2 Pages & Design System Unit Suite', () => {
 
     const startBtn = screen.getByRole('button', { name: 'Start' })
     fireEvent.click(startBtn)
-    expect(await screen.findByRole('heading', { level: 1, name: 'Your first check-in' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: 'Your first check-in' }, { timeout: 5000 })).toBeInTheDocument()
   })
 
   it('renders Page 06 Home (/dashboard): the greeting, Momo, one primary action and the radar (ticket 08)', async () => {

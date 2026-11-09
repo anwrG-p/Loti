@@ -18,7 +18,7 @@ import SettingsPage from '../pages/SettingsPage'
 
 // /you, /privacy and /settings are wired in App.tsx by ticket 09a, so these render the pages alone.
 function renderPage(page: ReactElement) {
-  const view = render(<MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>{page}</MemoryRouter>)
+  const view = render(<MemoryRouter>{page}</MemoryRouter>)
   return view.container
 }
 

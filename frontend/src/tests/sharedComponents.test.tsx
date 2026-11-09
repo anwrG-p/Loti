@@ -6,9 +6,6 @@ import { Badge, type BadgeTone } from '../components/ui/Badge'
 import { Button, type ButtonSize, type ButtonVariant } from '../components/ui/Button'
 import { BRAND_CONFIG } from '../config/brand'
 
-// Same flags as App.tsx, so the router prints no v7 warnings.
-const future = { v7_startTransition: true, v7_relativeSplatPath: true }
-
 afterEach(cleanup)
 
 const VARIANTS: ButtonVariant[] = ['primary', 'secondary', 'reward', 'danger', 'ghost']
@@ -61,7 +58,7 @@ describe('Badge (Calm & Clean)', () => {
 describe('AppShell (Calm & Clean)', () => {
   it('shows no fake streak pill', () => {
     const { container } = render(
-      <MemoryRouter future={future} initialEntries={['/dashboard']}>
+      <MemoryRouter initialEntries={['/dashboard']}>
         <AppShell>
           <p>page</p>
         </AppShell>
@@ -72,7 +69,7 @@ describe('AppShell (Calm & Clean)', () => {
 
   it('keeps a 64 px header and the logo link name', () => {
     render(
-      <MemoryRouter future={future} initialEntries={['/dashboard']}>
+      <MemoryRouter initialEntries={['/dashboard']}>
         <AppShell>
           <p>page</p>
         </AppShell>

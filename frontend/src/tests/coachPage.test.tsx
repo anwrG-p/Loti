@@ -9,8 +9,6 @@ import { LotiBubbles } from '../features/loti/LotiBubbles'
 import { LOTI_SESSION_KEY, MAX_TURNS, loadLotiSession, useLotiSession } from '../features/loti/lotiSession'
 import { createCoachBrain, keywordCrisisGate } from '../features/loti/coachAdapter'
 
-const future = { v7_startTransition: true, v7_relativeSplatPath: true }
-
 function Where() {
   const loc = useLocation()
   return <p data-testid="where">{loc.pathname + loc.search}</p>
@@ -18,7 +16,7 @@ function Where() {
 
 function renderAt(path = '/coach', page = <CoachPage />) {
   return render(
-    <MemoryRouter initialEntries={[path]} future={future}>
+    <MemoryRouter initialEntries={[path]}>
       <Routes>
         <Route path="/coach" element={page} />
         <Route path="/dashboard" element={<LotiBubbles context={{ now: new Date(), hasGoalsThisYear: true, sessionsThisWeek: 0 }} />} />

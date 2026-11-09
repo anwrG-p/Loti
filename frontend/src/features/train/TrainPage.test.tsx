@@ -16,7 +16,7 @@ function RunnerProbe() {
 // ponytail: /train is wired in App.tsx by ticket 09a; this harness routes it locally.
 function renderTrain(url = '/train') {
   render(
-    <MemoryRouter initialEntries={[url]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <MemoryRouter initialEntries={[url]}>
       <Routes>
         <Route path="/train" element={<TrainPage />} />
         <Route path="/task/:dimId" element={<RunnerProbe />} />

@@ -8,12 +8,9 @@ import TaskRunnerPage from '../pages/TaskRunnerPage'
 import { useAppStore } from '../state/useAppStore'
 import { begin } from './exerciseFrame'
 
-// Same flags as App.tsx, so the router prints no v7 warnings.
-const future = { v7_startTransition: true, v7_relativeSplatPath: true }
-
 const renderAt = (url: string) =>
   render(
-    <MemoryRouter future={future} initialEntries={[url]}>
+    <MemoryRouter initialEntries={[url]}>
       <Routes>
         <Route path="/task/:dimId" element={<TaskRunnerPage />} />
       </Routes>
@@ -265,7 +262,6 @@ describe('TaskRunnerPage mounts the real exercises', () => {
   it('Back to another dimension resets the block, so its summary never shows the old totals', async () => {
     render(
       <MemoryRouter
-        future={future}
         initialEntries={['/task/working_memory?judge=1', '/task/episodic_pattern_separation?judge=1']}
         initialIndex={1}
       >

@@ -12,9 +12,6 @@ import { useEmilyStore } from '../state/useEmilyStore'
 import { DEFAULT_PREFS, PREFS_KEY, useDevicePrefs } from '../state/devicePrefs'
 import { begin } from './exerciseFrame'
 
-// Same flags as App.tsx, so the router prints no v7 warnings.
-const future = { v7_startTransition: true, v7_relativeSplatPath: true }
-
 function Where() {
   const { pathname } = useLocation()
   return <span data-testid="where">{pathname}</span>
@@ -22,7 +19,7 @@ function Where() {
 
 const shellAt = (url: string) =>
   render(
-    <MemoryRouter future={future} initialEntries={[url]}>
+    <MemoryRouter initialEntries={[url]}>
       <AppShell>
         <Where />
       </AppShell>
@@ -31,7 +28,7 @@ const shellAt = (url: string) =>
 
 const runnerAt = (url: string) =>
   render(
-    <MemoryRouter future={future} initialEntries={[url]}>
+    <MemoryRouter initialEntries={[url]}>
       <Routes>
         <Route path="/task/:dimId" element={<TaskRunnerPage />} />
       </Routes>

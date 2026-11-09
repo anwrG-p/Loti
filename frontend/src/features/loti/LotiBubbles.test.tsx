@@ -7,8 +7,6 @@ import { LotiBubbles, TALK_MS } from './LotiBubbles'
 import { useLotiSession } from './lotiSession'
 import type { LotiContext } from './types'
 
-const future = { v7_startTransition: true, v7_relativeSplatPath: true }
-
 // Wednesday afternoon, no weakest pillar: Loti opens with "How was your day?".
 const dayCtx: LotiContext = { now: new Date('2026-10-28T15:00:00'), hasGoalsThisYear: true, sessionsThisWeek: 0 }
 
@@ -19,7 +17,7 @@ function Where() {
 
 function renderBubbles(context: LotiContext = dayCtx, onAction?: Parameters<typeof LotiBubbles>[0]['onAction']) {
   return render(
-    <MemoryRouter initialEntries={['/home']} future={future}>
+    <MemoryRouter initialEntries={['/home']}>
       <Routes>
         <Route path="*" element={<><LotiBubbles context={context} onAction={onAction} /><Where /></>} />
       </Routes>
@@ -166,7 +164,7 @@ describe('LotiBubbles', () => {
 
   it('renders nothing when the brain has nothing to say', () => {
     const { container } = render(
-      <MemoryRouter future={future}>
+      <MemoryRouter>
         <LotiBubbles context={dayCtx} brain={{ opening: () => null, respond: () => null }} />
       </MemoryRouter>,
     )
@@ -197,7 +195,7 @@ describe('LotiBubbles', () => {
     expect(screen.getByText('How was your day?')).toBeInTheDocument()
     first.unmount()
     render(
-      <MemoryRouter future={future}>
+      <MemoryRouter>
         <LotiBubbles context={dayCtx} resume />
       </MemoryRouter>,
     )
@@ -208,7 +206,7 @@ describe('LotiBubbles', () => {
 describe('LotiBubbles, collapsed (Home: one clickable line)', () => {
   function renderCollapsed() {
     return render(
-      <MemoryRouter initialEntries={['/home']} future={future}>
+      <MemoryRouter initialEntries={['/home']}>
         <LotiBubbles context={dayCtx} collapsed />
       </MemoryRouter>,
     )

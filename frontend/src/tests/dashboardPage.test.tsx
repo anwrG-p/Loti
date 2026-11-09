@@ -14,7 +14,6 @@ import { DEFAULT_PREFS, useDevicePrefs } from '../state/devicePrefs'
 
 /* Home = /dashboard (ticket 08). Real sessions from the session store; need-to-know only (rules 13, 14). */
 
-const future = { v7_startTransition: true, v7_relativeSplatPath: true }
 const DAY = 86_400_000
 const WEEK = 7 * DAY
 
@@ -49,7 +48,7 @@ function seed(list: SessionRecord[]) {
 
 function renderHome() {
   return render(
-    <MemoryRouter initialEntries={['/dashboard']} future={future}>
+    <MemoryRouter initialEntries={['/dashboard']}>
       <Routes>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/baseline" element={<h1>Baseline page</h1>} />

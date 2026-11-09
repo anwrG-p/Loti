@@ -15,7 +15,7 @@ afterEach(() => {
 
 describe('useLotiActions setGoal', () => {
   const wrapper = ({ children }: { children: ReactNode }) =>
-    createElement(MemoryRouter, { future: { v7_startTransition: true, v7_relativeSplatPath: true } }, children)
+    createElement(MemoryRouter, null, children)
 
   it('stores the pillar current score as the goal base, or none when the pillar is not measured', () => {
     useSessionStore.setState({
