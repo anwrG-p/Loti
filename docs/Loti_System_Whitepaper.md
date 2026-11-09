@@ -2,7 +2,7 @@
 
 **Authors:** AI4Brain Research & Development Team  
 **Release Version:** 1.0.0 (Production Verified)  
-**System Repository:** [Loti Open Source](https://github.com/anouarguemri/ai4brain)  
+**System Repository:** [Loti Open Source](https://github.com/anwrG-p/Loti)  
 **Verification Status:** 3,100+ Automated Tests Passing (Frontend QA Green + Backend Pytest Green)  
 
 ---
